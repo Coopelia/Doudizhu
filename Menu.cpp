@@ -8,6 +8,7 @@ Menu::Menu()
 	this->num_button = 0;
 	this->num_text = 0;
 	this->num_sprite = 0;
+	this->isOpen = false;
 	this->font.loadFromFile("assets/fonts/fSimpleRound.ttf");
 }
 

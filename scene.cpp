@@ -5,9 +5,30 @@ StartScene::StartScene()
 	this->app = NULL;
 	isRunning = false;
 	isExit = false;
-	tBackground.loadFromFile("assets/image/game/bg.jpg");
+	tBackground.loadFromFile("assets/image/game/背景/背景1.jpg");
 	sBackground.setTexture(tBackground);
-	bt_Enter.setTextrue("assets/image/game/start_btn0.png");
+	tBack_menu.loadFromFile("assets/image/game/大厅/菜单-底.png");
+	sBack_menu.setTexture(tBack_menu);
+	tMeinv.loadFromFile("assets/image/game/大幅/角色.png");
+	sMeinv.setTexture(tMeinv);
+	tBackUser.loadFromFile("assets/image/game/大厅/用户栏-底.png");
+	sBackUser.setTexture(tBackUser);
+	tUserHead.loadFromFile("assets/image/game/大厅/用户栏-默认头像.png");
+	sUserHead.setTexture(tUserHead);
+	tJf.loadFromFile("assets/image/game/大厅/用户栏-金币.png");
+	sJf.setTexture(tJf);
+	tRankList.loadFromFile("assets/image/game/大厅/排行榜.png");
+	sRankList.setTexture(tRankList);
+	bt_Enter.setTextrue("assets/image/game/大厅/房间入口-斗地主.png");
+	bt_creat.setTextrue("assets/image/game/大厅/房间入口-创建.png");
+	bt_join.setTextrue("assets/image/game/大厅/房间入口-加入.png");
+	bt_setting.setTextrue("assets/image/game/大厅/菜单-设置.png");
+	bt_exit.setTextrue("assets/image/game/大厅/leave_btn0.png");
+	bt_fankui.setTextrue("assets/image/game/大厅/菜单-反馈.png");
+	bt_mail.setTextrue("assets/image/game/大厅/菜单-邮件.png");
+	bt_store.setTextrue("assets/image/game/大厅/菜单-商城.png");
+	bt_wanfa.setTextrue("assets/image/game/大厅/菜单-玩法.png");
+	bt_zhanji.setTextrue("assets/image/game/大厅/菜单-战绩.png");
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Welcome.ogg");
 	bgm.setLoop(true);
 }
@@ -16,17 +37,15 @@ void StartScene::Initial(RenderWindow* app)
 {
 	this->app = app;
 	this->bt_Enter.app = app;
-	this->menu_setting.app = app;
-	this->menu_exit.app = app;
-	this->menu_exit.setBack("assets/image/game/Menu/back3.png");
-	this->menu_exit.setPosition(324, 163);
-	this->menu_setting.setBack("assets/image/game/Menu/back1.png");
-	this->menu_setting.setPosition(483, 143);
-
-	this->menu_setting.addText(L"音量:", 335, 180, 40, Color::White);
-	this->menu_setting.addButton("assets/image/game/Menu/left.png", 410, 180, 0.4, 0.4);
-	this->menu_setting.addText(std::to_string(vol), 460, 182, 36, Color::Yellow);
-	this->menu_setting.addButton("assets/image/game/Menu/right.png", 520, 180, 0.4, 0.4);
+	this->bt_creat.app = app;
+	this->bt_join.app = app;
+	this->bt_exit.app = app;
+	this->bt_fankui.app = app;
+	this->bt_mail.app = app;
+	this->bt_setting.app = app;
+	this->bt_store.app = app;
+	this->bt_wanfa.app = app;
+	this->bt_zhanji.app = app;
 }
 
 void StartScene::Start()
@@ -39,15 +58,44 @@ void StartScene::Start()
 void StartScene::Update()
 {
 	this->bgm.setVolume(vol);
-	menu_setting.text[1].setString(std::to_string(vol));
 }
 
 void StartScene::Draw()
 {
 	sBackground.setPosition(0, 0);
-	bt_Enter.setPosition(534, 500);
+	sBack_menu.setPosition(25, 675);
+	sMeinv.setPosition(450, 80);
+	sBackUser.setPosition(0, 0);
+	sUserHead.setPosition(5,5);
+	sJf.setPosition(100, 25);
+	sRankList.setPosition(50, 100);
 	(*app).draw(sBackground);
+	(*app).draw(sMeinv);
+	(*app).draw(sBackUser);
+	(*app).draw(sUserHead);
+	(*app).draw(sJf);
+	(*app).draw(sRankList);
+	(*app).draw(sBack_menu);
+	bt_Enter.setPosition(865, 100);
+	bt_join.setPosition(820, 243);
+	bt_creat.setPosition(820, 400);
+	bt_store.setPosition(130, 610);
+	bt_setting.setPosition(320, 622);
+	bt_mail.setPosition(480, 630);
+	bt_wanfa.setPosition(640, 625);
+	bt_fankui.setPosition(800, 627);
+	bt_zhanji.setPosition(960, 623);
+	bt_exit.setPosition(1120, 640);
 	bt_Enter.show();
+	bt_creat.show();
+	bt_join.show();
+	bt_exit.show();
+	bt_fankui.show();
+	bt_mail.show();
+	bt_setting.show();
+	bt_store.show();
+	bt_wanfa.show();
+	bt_zhanji.show();
 	//menu_setting.show();
 	//menu_exit.show();
 }
@@ -76,10 +124,10 @@ GameScene::GameScene()
 	puke_manager.human = &this->human;
 	puke_manager.ai_1 = &this->ai_1;
 	puke_manager.ai_2 = &this->ai_2;
-	tBackground.loadFromFile("assets/image/game/room_bg.png");
+	tBackground.loadFromFile("assets/image/game/房间/room_bg.png");
 	sBackground.setTexture(tBackground);
-	tOver[0].loadFromFile("assets/image/game/win.png");
-	tOver[1].loadFromFile("assets/image/game/lose.png");
+	tOver[0].loadFromFile("assets/image/game/斗地主结算/切图/你赢了.png");
+	tOver[1].loadFromFile("assets/image/game/斗地主结算/切图/你输了.png");
 	sOver.setPosition(363, 267);
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Normal.ogg");
 	bgm.setLoop(true);
@@ -91,20 +139,6 @@ void GameScene::Initial(RenderWindow* app)
 	this->human.Initial(app);
 	this->ai_1.Initial(app);
 	this->ai_2.Initial(app);
-	this->menu_setting.app = app;
-	this->menu_exit.app = app;
-	for (int i = 0; i < 14; i++)
-		for (int j = 0; j < 4; j++)
-			this->puke_manager.puke.c[i][j].app = this->app;
-	this->menu_exit.setBack("assets/image/game/Menu/back2.png");
-	this->menu_exit.setPosition(324, 123);
-	this->menu_setting.setBack("assets/image/game/Menu/back1.png");
-	this->menu_setting.setPosition(483, 143);
-
-	this->menu_setting.addText(L"音量:", 335, 180, 40, Color::White);
-	this->menu_setting.addButton("assets/image/game/Menu/left.png", 410, 180, 0.4, 0.4);
-	this->menu_setting.addText(std::to_string(vol), 460, 182, 36, Color::Yellow);
-	this->menu_setting.addButton("assets/image/game/Menu/right.png", 520, 180, 0.4, 0.4);
 }
 
 void GameScene::Start()
@@ -119,7 +153,6 @@ void GameScene::Start()
 void GameScene::Update()
 {
 	this->bgm.setVolume(vol);
-	menu_setting.text[1].setString(std::to_string(vol));
 	puke_manager.update();
 	human.update();
 	ai_1.update();
@@ -281,21 +314,21 @@ void GameScene::Draw()
 	//画倒计时
 	if (human.isMyTime)
 	{
-		human.sClock.setPosition(610, 360);
+		human.sClock.setPosition(615, 370);
 		human.tDaojishi.setPosition(649, 402);
 		(*app).draw(human.sClock);
 		(*app).draw(human.tDaojishi);
 	}
 	if (ai_1.isMyTime)
 	{
-		ai_1.sClock.setPosition(892, 155);
+		ai_1.sClock.setPosition(897, 165);
 		ai_1.tDaojishi.setPosition(930, 197);
 		(*app).draw(ai_1.sClock);
 		(*app).draw(ai_1.tDaojishi);
 	}
 	if (ai_2.isMyTime)
 	{
-		ai_2.sClock.setPosition(270, 155);
+		ai_2.sClock.setPosition(275, 165);
 		ai_2.tDaojishi.setPosition(309, 197);
 		(*app).draw(ai_2.sClock);
 		(*app).draw(ai_2.tDaojishi);

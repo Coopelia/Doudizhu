@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	this->app = new RenderWindow(VideoMode(WIDTH, HEIGHT), "ChinesePoker");
+	this->app = new RenderWindow(VideoMode(WIDTH, HEIGHT), "ChinesePoker", Uint32(5));
 	this->app->setFramerateLimit(60);
 	start_scene.app = this->app;
 	game_scene.app = this->app;

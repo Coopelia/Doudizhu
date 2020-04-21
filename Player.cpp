@@ -14,15 +14,15 @@ User::User()
 	{
 		hand_card[i] = -1;
 	}
-	tHead[0].loadFromFile("assets/image/game/no.png");
-	tHead[1].loadFromFile("assets/image/game/dizhu.png");
-	tHead[2].loadFromFile("assets/image/game/nonmin.png");
-	tCallNo.loadFromFile("assets/image/game/nocall.png");
-	tCallOne.loadFromFile("assets/image/game/one.png");
-	tCallTwo.loadFromFile("assets/image/game/two.png");
-	tCallThree.loadFromFile("assets/image/game/three.png");
-	tNoCard.loadFromFile("assets/image/game/nodiscard.bmp");
-	tClock.loadFromFile("assets/image/game/timer_bg.png");
+	tHead[0].loadFromFile("assets/image/game/房间/no.png");
+	tHead[1].loadFromFile("assets/image/game/房间/dizhu.png");
+	tHead[2].loadFromFile("assets/image/game/房间/nonmin.png");
+	tCallNo.loadFromFile("assets/image/game/功能/斗地主/提示_不抢.png");
+	tCallOne.loadFromFile("assets/image/game/功能/斗地主/提示_1.png");
+	tCallTwo.loadFromFile("assets/image/game/功能/斗地主/提示_2.png");
+	tCallThree.loadFromFile("assets/image/game/功能/斗地主/提示_3.png");
+	tNoCard.loadFromFile("assets/image/game/功能/斗地主/提示_不出.png");
+	tClock.loadFromFile("assets/image/game/功能/斗地主/jsq.png");
 	sClock.setTexture(tClock);
 	sHead.setTexture(tHead[0]);
 	sNoCard.setTexture(tNoCard);
@@ -178,14 +178,14 @@ Player::Player()
 	{
 		hand_card[i] = -1;
 	}
-	bt_chupai.setTextrue("assets/image/game/go.png");
-	bt_pass.setTextrue("assets/image/game/pass.png");
-	bt_tishi.setTextrue("assets/image/game/tip.png");
-	bt_reselet.setTextrue("assets/image/game/resel.png");
-	bt_callThree.setTextrue("assets/image/game/three.png");
-	bt_callTwo.setTextrue("assets/image/game/two.png");
-	bt_callOne.setTextrue("assets/image/game/one.png");
-	bt_callNo.setTextrue("assets/image/game/nocall.png");
+	bt_chupai.setTextrue("assets/image/game/功能/斗地主/go.png");
+	bt_pass.setTextrue("assets/image/game/功能/斗地主/pass.png");
+	bt_tishi.setTextrue("assets/image/game/功能/斗地主/tip.png");
+	bt_reselet.setTextrue("assets/image/game/功能/斗地主/resel.png");
+	bt_callThree.setTextrue("assets/image/game/功能/斗地主/three.png");
+	bt_callTwo.setTextrue("assets/image/game/功能/斗地主/two.png");
+	bt_callOne.setTextrue("assets/image/game/功能/斗地主/one.png");
+	bt_callNo.setTextrue("assets/image/game/功能/斗地主/nocall.png");
 	bt_tishi.setPosition(1100, 500);
 	bt_chupai.setPosition(1100, 540);
 	bt_reselet.setPosition(1100, 580);
@@ -194,9 +194,9 @@ Player::Player()
 	bt_callTwo.setPosition(650, 480);
 	bt_callOne.setPosition(700, 480);
 	bt_callNo.setPosition(750, 480);
-	tHead[0].loadFromFile("assets/image/game/no.png");
-	tHead[1].loadFromFile("assets/image/game/dizhu.png");
-	tHead[2].loadFromFile("assets/image/game/nonmin.png");
+	tHead[0].loadFromFile("assets/image/game/房间/no.png");
+	tHead[1].loadFromFile("assets/image/game/房间/dizhu.png");
+	tHead[2].loadFromFile("assets/image/game/房间/nonmin.png");
 	sHead.setTexture(tHead[0]);
 	font.loadFromFile("assets/fonts/fSimpleRound.ttf");
 	tNum_rest.setFont(font);
@@ -264,9 +264,9 @@ AI::AI()
 	{
 		hand_card[i] = -1;
 	}
-	tHead[0].loadFromFile("assets/image/game/no.png");
-	tHead[1].loadFromFile("assets/image/game/dizhu.png");
-	tHead[2].loadFromFile("assets/image/game/nonmin.png");
+	tHead[0].loadFromFile("assets/image/game/房间/no.png");
+	tHead[1].loadFromFile("assets/image/game/房间/dizhu.png");
+	tHead[2].loadFromFile("assets/image/game/房间/nonmin.png");
 	sHead.setTexture(tHead[0]);
 	font.loadFromFile("assets/fonts/fSimpleRound.ttf");
 	tNum_rest.setFont(font);

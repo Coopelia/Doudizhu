@@ -35,7 +35,7 @@ bool Button::onClick(Event& e)
 			this->PreBehRel = true;
 		}
 		else
-			this->s.setColor(Color(125, 125, 0, 100));
+			this->s.setColor(Color(125, 125, 125, 255));
 	}
 	else
 		this->s.setColor(Color(255,255,255, 255));

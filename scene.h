@@ -9,16 +9,19 @@ class StartScene
 {
 	friend class Game;
 public:
-	Menu menu_setting, menu_exit;//设置、退出对话框
 	Music bgm;
-	Button bt_setting, bt_exit;//设置按钮，退出按钮
+	Button bt_setting, bt_exit;//设置按钮，退出
 	Sprite sBackground;
+	Sprite sBack_menu;
 	Texture tBackground;
+	Texture tBack_menu;
 	bool isRunning;//是否在当前场景
 	bool isExit;//是否离开当前场景
 	StartScene();
 private:
-	Button bt_Enter, bt_RankList;//
+	Button bt_Enter, bt_join, bt_creat, bt_fankui, bt_store, bt_wanfa, bt_mail, bt_zhanji;
+	Sprite sMeinv, sBackUser, sUserHead, sJf, sRankList;
+	Texture tMeinv, tBackUser, tUserHead, tJf, tRankList;
 	RenderWindow* app;
 	void Initial(RenderWindow* app);
 	void Start();
