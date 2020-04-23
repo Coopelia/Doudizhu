@@ -3,10 +3,16 @@
 StartScene::StartScene()
 {
 	this->app = NULL;
+	value_bg = 1;
+	num_mail = 1;
 	isRunning = false;
 	isExit = false;
-	tBackground.loadFromFile("assets/image/game/背景/背景1.jpg");
-	sBackground.setTexture(tBackground);
+	isOnSetting = false;
+	isOnMail = false;
+	tBackground1.loadFromFile("assets/image/game/背景/背景1.jpg");
+	tBackground2.loadFromFile("assets/image/game/背景/背景2.jpg");
+	tBackground3.loadFromFile("assets/image/game/背景/背景3.jpg");
+	sBackground.setTexture(tBackground1);
 	tBack_menu.loadFromFile("assets/image/game/大厅/菜单-底.png");
 	sBack_menu.setTexture(tBack_menu);
 	tMeinv.loadFromFile("assets/image/game/大幅/角色.png");
@@ -19,6 +25,20 @@ StartScene::StartScene()
 	sJf.setTexture(tJf);
 	tRankList.loadFromFile("assets/image/game/大厅/排行榜.png");
 	sRankList.setTexture(tRankList);
+	text_jb.setFont(font);
+	text_jb.setCharacterSize(24);
+	text_jb.setFillColor(Color::Yellow);
+	tBack_setting.loadFromFile("assets/image/game/大幅/设置菜单背景.png");
+	sBack_setting.setTexture(tBack_setting);
+	sBackMini.setScale(0.25, 0.25);
+	tBack_mail.loadFromFile("assets/image/game/大幅/邮件菜单背景.png");
+	sBack_mail.setTexture(tBack_mail);
+	tRedPoint.loadFromFile("assets/image/game/大厅/菜单-红点提示.png");
+	sRedPoint.setTexture(tRedPoint);
+	mail.setText(L"资源1", L"金币*20000");
+	bt_mail_ok.setTextrue("assets/image/game/大厅弹框/#按钮/确定.png");
+	font.loadFromFile("assets/fonts/fSimpleRound.ttf");
+	bt_setting_ok.setTextrue("assets/image/game/大厅弹框/#按钮/确定.png");
 	bt_Enter.setTextrue("assets/image/game/大厅/房间入口-斗地主.png");
 	bt_creat.setTextrue("assets/image/game/大厅/房间入口-创建.png");
 	bt_join.setTextrue("assets/image/game/大厅/房间入口-加入.png");
@@ -29,6 +49,12 @@ StartScene::StartScene()
 	bt_store.setTextrue("assets/image/game/大厅/菜单-商城.png");
 	bt_wanfa.setTextrue("assets/image/game/大厅/菜单-玩法.png");
 	bt_zhanji.setTextrue("assets/image/game/大厅/菜单-战绩.png");
+	bt_bgm_left.setTextrue("assets/image/game/大厅弹框/设置/left.png");
+	bt_bgm_right.setTextrue("assets/image/game/大厅弹框/设置/right.png");
+	bt_sound_left.setTextrue("assets/image/game/大厅弹框/设置/left.png"); 
+	bt_sound_right.setTextrue("assets/image/game/大厅弹框/设置/right.png"); 
+	bt_bg_left.setTextrue("assets/image/game/大厅弹框/设置/left.png");
+	bt_bg_right.setTextrue("assets/image/game/大厅弹框/设置/right.png");
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Welcome.ogg");
 	bgm.setLoop(true);
 }
@@ -46,18 +72,90 @@ void StartScene::Initial(RenderWindow* app)
 	this->bt_store.app = app;
 	this->bt_wanfa.app = app;
 	this->bt_zhanji.app = app;
+	this->bt_setting_ok.app = app;
+	this->bt_bgm_left.app = app; 
+	this->bt_bgm_right.app = app;
+	this->bt_sound_left.app = app;
+	this->bt_sound_right.app = app;
+	this->bt_bg_left.app = app;
+	this->bt_bg_right.app = app;
+	this->bt_mail_ok.app = app;
+	this->mail.initial(app, 230, 180);
 }
 
 void StartScene::Start()
 {
-	bgm.setVolume(vol);
 	bgm.play();
+	isExit = false;
 	isRunning = true;
+	isOnSetting = false;
 }
 
 void StartScene::Update()
 {
-	this->bgm.setVolume(vol);
+	this->bgm.setVolume(vol_bgm);
+	this->text_jb.setString(std::to_string(jb));
+	switch (value_bg)
+	{
+	case 1:
+		sBackground.setTexture(tBackground1);
+		sBackMini.setTexture(tBackground1);
+		break;
+	case 2:
+		sBackground.setTexture(tBackground2);
+		sBackMini.setTexture(tBackground2);
+		break;
+	case 3:
+		sBackground.setTexture(tBackground3);
+		sBackMini.setTexture(tBackground3);
+		break;
+	default:
+		break;
+	}
+}
+
+void StartScene::draw_setting()
+{
+	sBack_setting.setPosition(200, 60);
+	bt_setting_ok.setPosition(570, 450);
+	bt_bgm_left.setPosition(470, 277);
+	bt_bgm_right.setPosition(570,277);
+	bt_sound_left.setPosition(470, 378);
+	bt_sound_right.setPosition(570, 378);
+	bt_bg_left.setPosition(660, 330);
+	bt_bg_right.setPosition(1023, 330);
+	text_bgm.setFont(font);
+	text_bgm.setString(std::to_string(vol_bgm));
+	text_bgm.setCharacterSize(36);
+	text_bgm.setFillColor(Color::Blue);
+	text_bgm.setPosition(500, 268);
+	text_sound.setFont(font);
+	text_sound.setString(std::to_string(vol_sound));
+	text_sound.setCharacterSize(36);
+	text_sound.setFillColor(Color::Blue);
+	text_sound.setPosition(500, 368);
+	sBackMini.setPosition(690, 240);
+	(*app).draw(sBack_setting);
+	(*app).draw(sBackMini);
+	bt_setting_ok.show();
+	bt_bgm_left.show(); 
+	bt_bgm_right.show();
+	bt_sound_left.show();
+	bt_sound_right.show();
+	bt_bg_left.show();
+	bt_bg_right.show();
+	(*app).draw(text_bgm);
+	(*app).draw(text_sound);
+}
+
+void StartScene::draw_mail()
+{
+	sBack_mail.setPosition(200, 60);
+	bt_mail_ok.setPosition(570, 450);
+	(*app).draw(sBack_mail);
+	bt_mail_ok.show();
+	if(!mail.isOpened)
+		mail.show();
 }
 
 void StartScene::Draw()
@@ -68,12 +166,14 @@ void StartScene::Draw()
 	sBackUser.setPosition(0, 0);
 	sUserHead.setPosition(5,5);
 	sJf.setPosition(100, 25);
+	text_jb.setPosition(150, 28);
 	sRankList.setPosition(50, 100);
 	(*app).draw(sBackground);
 	(*app).draw(sMeinv);
 	(*app).draw(sBackUser);
 	(*app).draw(sUserHead);
 	(*app).draw(sJf);
+	(*app).draw(text_jb);
 	(*app).draw(sRankList);
 	(*app).draw(sBack_menu);
 	bt_Enter.setPosition(865, 100);
@@ -96,14 +196,67 @@ void StartScene::Draw()
 	bt_store.show();
 	bt_wanfa.show();
 	bt_zhanji.show();
-	//menu_setting.show();
-	//menu_exit.show();
+	if (num_mail > 0)
+	{
+		sRedPoint.setPosition(520, 625);
+		(*app).draw(sRedPoint);
+	}
+	
+	if (isOnSetting)
+		draw_setting();
+	if (isOnMail)
+		draw_mail();
 }
 
 void StartScene::Input(Event& e)
 {
+	if (isOnSetting)
+		Input_setting(e);
+	else if (isOnMail)
+		Input_mail(e);
+	else
+		Input_scene(e);
+}
+
+
+void StartScene::Input_scene(Event& e)
+{
 	if (bt_Enter.onClick(e))
 		this->isExit = true;
+	if (bt_setting.onClick(e))
+		this->isOnSetting = true;
+	if (bt_mail.onClick(e))
+		this->isOnMail = true;
+}
+
+void StartScene::Input_setting(Event& e)
+{
+	if (this->bt_setting_ok.onClick(e))
+		this->isOnSetting = false;
+	if (this->bt_bgm_left.onClick(e)&&vol_bgm>=10)
+		vol_bgm -= 10;
+	if (this->bt_bgm_right.onClick(e)&&vol_bgm<=90)
+		vol_bgm += 10;
+	if (this->bt_sound_left.onClick(e) && vol_sound >= 10)
+		vol_sound -= 10;
+	if (this->bt_sound_right.onClick(e) && vol_sound <= 90)
+		vol_sound += 10;
+	if (this->bt_bg_left.onClick(e))
+		value_bg = value_bg % 3 + 1;
+	if (this->bt_bg_right.onClick(e))
+		value_bg = value_bg == 1 ? 3 : value_bg - 1;
+}
+
+void StartScene::Input_mail(Event& e)
+{
+	if (mail.bt_ok.onClick(e) && !mail.isOpened)
+	{
+		jb += 20000;
+		mail.isOpened = true;
+		num_mail--;
+	}
+	if (bt_mail_ok.onClick(e))
+		isOnMail = false;
 }
 
 void StartScene::SceneClose()
@@ -124,8 +277,8 @@ GameScene::GameScene()
 	puke_manager.human = &this->human;
 	puke_manager.ai_1 = &this->ai_1;
 	puke_manager.ai_2 = &this->ai_2;
-	tBackground.loadFromFile("assets/image/game/房间/room_bg.png");
-	sBackground.setTexture(tBackground);
+	tBackground1.loadFromFile("assets/image/game/房间/room_bg.png");
+	sBackground.setTexture(tBackground1);
 	tOver[0].loadFromFile("assets/image/game/斗地主结算/切图/你赢了.png");
 	tOver[1].loadFromFile("assets/image/game/斗地主结算/切图/你输了.png");
 	sOver.setPosition(363, 267);
@@ -143,7 +296,6 @@ void GameScene::Initial(RenderWindow* app)
 
 void GameScene::Start()
 {
-	bgm.setVolume(vol);
 	bgm.play();
 	isRunning = true;
 	isDealing = true;
@@ -152,7 +304,7 @@ void GameScene::Start()
 
 void GameScene::Update()
 {
-	this->bgm.setVolume(vol);
+	this->bgm.setVolume(vol_bgm);
 	puke_manager.update();
 	human.update();
 	ai_1.update();

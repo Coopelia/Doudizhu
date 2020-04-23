@@ -7,6 +7,7 @@ class Button
 	friend class StartScene;
 	friend class GameScene;
 	friend class Menu;
+	friend class Mail;
 	friend class Player;
 public:
 	Button():app(NULL),PreBehRel(false) {};

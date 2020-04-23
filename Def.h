@@ -50,7 +50,8 @@ enum PukeType {
 	rocket //»ð¼ý
 };
 enum DEC { NOT = 0, PASS, CHU };
-extern int vol;
+extern int vol_bgm, vol_sound;
+extern int jb;
 extern int px1, py1, px2, py2;
 extern class Card;
 extern class Puke;
@@ -59,10 +60,9 @@ extern class StartScene;
 extern class GameScene;
 extern class Game;
 extern class MyClock;
-extern class Menu;
-extern class MenuTree;
 extern class User;
 extern class Player;
 extern class AI;
 extern class PukeManager;
 extern class MouseRectIn;
+extern class Mail;

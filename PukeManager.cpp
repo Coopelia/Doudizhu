@@ -815,12 +815,16 @@ bool PukeManager::findWithType(PukeType type, int low, int* source_card, int* re
 							if (t == m1)
 							{
 								int num_re = 0;
-								for (int jj = 0; jj < m1; i++)
+								for (int jj = 0; jj < m1; jj++)
 								{
-									for (int kk = 0; kk < num; kk++)
+									for (int kk = num-1; kk >= 0 ; kk--)
 									{
 										if (temp_hand_card[kk] / 4 == tem - jj)
+										{
 											result_card[num_re++] = temp_hand_card[kk];
+											temp_hand_card[kk] = -1;
+											break;
+										}
 									}
 								}
 								return true;
@@ -969,8 +973,6 @@ void PukeManager::autoSeleteCard(AI* ai)
 					seletedCard[0] = 52;
 					seletedCard[1] = 53;
 					num_seleted = 2;
-					(*ai).removeCard(52);
-					(*ai).removeCard(53);
 					isOk = true;
 				}
 				else
@@ -1101,7 +1103,7 @@ PukeType PukeManager::checkType(int* card, int num)
 		return illegal;
 	else if (num == 2 && card[0] == 52 && card[1] == 53)
 		return rocket;
-	else if (num == 4 && card[0] == card[3])
+	else if (num == 4 && card[0] / 4 == card[3] / 4)
 		return bomb;
 	else
 	{

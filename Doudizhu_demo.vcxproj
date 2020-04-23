@@ -134,8 +134,8 @@
     <ClCompile Include="DFSCard.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game.h" />
+    <ClCompile Include="Mail.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MouseRectIn.cpp" />
     <ClCompile Include="MyClock.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -147,7 +147,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Def.h" />
     <ClInclude Include="DFSCard.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Mail.h" />
     <ClInclude Include="MouseRectIn.h" />
     <ClInclude Include="MyClock.h" />
     <ClInclude Include="Player.h" />

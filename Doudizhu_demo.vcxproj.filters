@@ -33,9 +33,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Def.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -54,6 +51,9 @@
     <ClCompile Include="DFSCard.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Mail.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="puke.h">
@@ -63,9 +63,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Def.h">
@@ -84,6 +81,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DFSCard.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Mail.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
