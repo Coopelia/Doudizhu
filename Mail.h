@@ -18,4 +18,3 @@ public:
 	void setText(String tittle, String mes);
 	void show();
 };
-

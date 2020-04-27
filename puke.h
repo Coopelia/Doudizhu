@@ -32,4 +32,3 @@ private:
 	Texture t[14][4];
 	Texture tBack;
 };
-

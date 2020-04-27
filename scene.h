@@ -35,8 +35,28 @@ private:
 	int num_mail;
 	Sprite sBack_mail, sRedPoint;
 	Texture tBack_mail, tRedPoint;
-	Button bt_mail_ok;
+	Button bt_mail_close;
 	Mail mail;
+
+	bool isOnWanfa;
+	Sprite sBack_wanfa;
+	Texture tBack_wanfa;
+	Button bt_wanfa_ok;
+
+	bool isOnFankui;
+	Sprite sBack_fankui;
+	Texture tBack_fankui;
+	Button bt_fankui_close;
+
+	bool isOnZhanji;
+	Sprite sBack_zhanji;
+	Texture tBack_zhanji;
+	Button bt_zhanji_close;
+
+	bool isOnExit;
+	Sprite sBack_exit;
+	Texture tBack_exit;
+	Button bt_exit_ok, bt_exit_cancel;
 
 	RenderWindow* app;
 	int value_bg;
@@ -47,8 +67,16 @@ private:
 	void Input_scene(Event& e);
 	void Input_setting(Event& e);
 	void Input_mail(Event& e);
+	void Input_wanfa(Event& e);
+	void Input_fankui(Event& e);
+	void Input_zhanji(Event& e);
+	void Input_exit(Event& e);
 	void draw_setting();
 	void draw_mail();
+	void draw_wanfa();
+	void draw_fankui();
+	void draw_zhanji();
+	void draw_exit();
 	void Draw();
 	void SceneClose();
 };

@@ -9,6 +9,10 @@ StartScene::StartScene()
 	isExit = false;
 	isOnSetting = false;
 	isOnMail = false;
+	isOnWanfa = false;
+	isOnFankui = false;
+	isOnZhanji = false;
+	isOnExit = false;
 	tBackground1.loadFromFile("assets/image/game/背景/背景1.jpg");
 	tBackground2.loadFromFile("assets/image/game/背景/背景2.jpg");
 	tBackground3.loadFromFile("assets/image/game/背景/背景3.jpg");
@@ -36,7 +40,20 @@ StartScene::StartScene()
 	tRedPoint.loadFromFile("assets/image/game/大厅/菜单-红点提示.png");
 	sRedPoint.setTexture(tRedPoint);
 	mail.setText(L"资源1", L"金币*20000");
-	bt_mail_ok.setTextrue("assets/image/game/大厅弹框/#按钮/确定.png");
+	bt_mail_close.setTextrue("assets/image/game/大厅弹框/close.png");
+	tBack_wanfa.loadFromFile("assets/image/game/大幅/玩法菜单背景.png");
+	sBack_wanfa.setTexture(tBack_wanfa);
+	bt_wanfa_ok.setTextrue("assets/image/game/大厅弹框/#按钮/okk.png");
+	tBack_fankui.loadFromFile("assets/image/game/大幅/反馈菜单背景.png");
+	sBack_fankui.setTexture(tBack_fankui);
+	bt_fankui_close.setTextrue("assets/image/game/大厅弹框/close.png");
+	tBack_zhanji.loadFromFile("assets/image/game/大幅/战绩菜单背景.png");
+	sBack_zhanji.setTexture(tBack_zhanji);
+	bt_zhanji_close.setTextrue("assets/image/game/大厅弹框/close.png");
+	tBack_exit.loadFromFile("assets/image/game/大厅弹框/exit.png");
+	sBack_exit.setTexture(tBack_exit);
+	bt_exit_ok.setTextrue("assets/image/game/大厅弹框/#按钮/确定.png");
+	bt_exit_cancel.setTextrue("assets/image/game/大厅弹框/#按钮/取消.png");
 	font.loadFromFile("assets/fonts/fSimpleRound.ttf");
 	bt_setting_ok.setTextrue("assets/image/game/大厅弹框/#按钮/确定.png");
 	bt_Enter.setTextrue("assets/image/game/大厅/房间入口-斗地主.png");
@@ -79,7 +96,12 @@ void StartScene::Initial(RenderWindow* app)
 	this->bt_sound_right.app = app;
 	this->bt_bg_left.app = app;
 	this->bt_bg_right.app = app;
-	this->bt_mail_ok.app = app;
+	this->bt_mail_close.app = app;
+	this->bt_wanfa_ok.app = app;
+	this->bt_fankui_close.app = app;
+	this->bt_zhanji_close.app = app;
+	this->bt_exit_ok.app = app;
+	this->bt_exit_cancel.app = app;
 	this->mail.initial(app, 230, 180);
 }
 
@@ -151,11 +173,45 @@ void StartScene::draw_setting()
 void StartScene::draw_mail()
 {
 	sBack_mail.setPosition(200, 60);
-	bt_mail_ok.setPosition(570, 450);
+	bt_mail_close.setPosition(990, 30);
 	(*app).draw(sBack_mail);
-	bt_mail_ok.show();
+	bt_mail_close.show();
 	if(!mail.isOpened)
 		mail.show();
+}
+
+void StartScene::draw_wanfa()
+{
+	sBack_wanfa.setPosition(200, 60);
+	bt_wanfa_ok.setPosition(570, 450);
+	(*app).draw(sBack_wanfa);
+	bt_wanfa_ok.show();
+}
+
+void StartScene::draw_fankui()
+{
+	sBack_fankui.setPosition(200, 60);
+	bt_fankui_close.setPosition(990, 30);
+	(*app).draw(sBack_fankui);
+	bt_fankui_close.show();
+}
+
+void StartScene::draw_zhanji()
+{
+	sBack_zhanji.setPosition(200, 60);
+	bt_zhanji_close.setPosition(990, 30);
+	(*app).draw(sBack_zhanji);
+	bt_zhanji_close.show();
+}
+
+void StartScene::draw_exit()
+{
+	sBack_exit.setPosition(360, 90);
+	bt_exit_ok.setPosition(480, 400);
+	bt_exit_cancel.setPosition(700, 400);
+	(*app).draw(sBack_exit);
+	bt_exit_ok.show();
+	bt_exit_cancel.show();
 }
 
 void StartScene::Draw()
@@ -201,11 +257,18 @@ void StartScene::Draw()
 		sRedPoint.setPosition(520, 625);
 		(*app).draw(sRedPoint);
 	}
-	
 	if (isOnSetting)
 		draw_setting();
 	if (isOnMail)
 		draw_mail();
+	if (isOnWanfa)
+		draw_wanfa();
+	if (isOnFankui)
+		draw_fankui();
+	if (isOnZhanji)
+		draw_zhanji();
+	if (isOnExit)
+		draw_exit();
 }
 
 void StartScene::Input(Event& e)
@@ -214,6 +277,14 @@ void StartScene::Input(Event& e)
 		Input_setting(e);
 	else if (isOnMail)
 		Input_mail(e);
+	else if (isOnWanfa)
+		Input_wanfa(e);
+	else if (isOnFankui)
+		Input_fankui(e);
+	else if (isOnZhanji)
+		Input_zhanji(e);
+	else if (isOnExit)
+		Input_exit(e);
 	else
 		Input_scene(e);
 }
@@ -227,6 +298,14 @@ void StartScene::Input_scene(Event& e)
 		this->isOnSetting = true;
 	if (bt_mail.onClick(e))
 		this->isOnMail = true;
+	if (bt_wanfa.onClick(e))
+		this->isOnWanfa = true;
+	if (bt_fankui.onClick(e))
+		this->isOnFankui = true;
+	if (bt_zhanji.onClick(e))
+		this->isOnZhanji = true;
+	if (bt_exit.onClick(e))
+		this->isOnExit = true;
 }
 
 void StartScene::Input_setting(Event& e)
@@ -255,8 +334,34 @@ void StartScene::Input_mail(Event& e)
 		mail.isOpened = true;
 		num_mail--;
 	}
-	if (bt_mail_ok.onClick(e))
+	if (bt_mail_close.onClick(e))
 		isOnMail = false;
+}
+
+void StartScene::Input_wanfa(Event& e)
+{
+	if (bt_wanfa_ok.onClick(e))
+		isOnWanfa = false;
+}
+
+void StartScene::Input_fankui(Event& e)
+{
+	if (bt_fankui_close.onClick(e))
+		isOnFankui = false;
+}
+
+void StartScene::Input_zhanji(Event& e)
+{
+	if (bt_zhanji_close.onClick(e))
+		isOnZhanji = false;
+}
+
+void StartScene::Input_exit(Event& e)
+{
+	if (bt_exit_ok.onClick(e))
+		(*app).close();
+	if (bt_exit_cancel.onClick(e))
+		isOnExit = false;
 }
 
 void StartScene::SceneClose()

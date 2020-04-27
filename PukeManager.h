@@ -33,4 +33,3 @@ public:
 private:
 	int temp[54];//辅助用的数组
 };
-

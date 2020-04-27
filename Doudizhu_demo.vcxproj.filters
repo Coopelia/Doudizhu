@@ -54,6 +54,12 @@
     <ClCompile Include="Mail.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedSprite.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="puke.h">
@@ -84,6 +90,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Mail.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedSprite.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
