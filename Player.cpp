@@ -180,16 +180,14 @@ Player::Player()
 	}
 	bt_chupai.setTextrue("assets/image/game/功能/斗地主/go.png");
 	bt_pass.setTextrue("assets/image/game/功能/斗地主/pass.png");
-	bt_tishi.setTextrue("assets/image/game/功能/斗地主/tip.png");
-	bt_reselet.setTextrue("assets/image/game/功能/斗地主/resel.png");
 	bt_callThree.setTextrue("assets/image/game/功能/斗地主/three.png");
 	bt_callTwo.setTextrue("assets/image/game/功能/斗地主/two.png");
 	bt_callOne.setTextrue("assets/image/game/功能/斗地主/one.png");
 	bt_callNo.setTextrue("assets/image/game/功能/斗地主/nocall.png");
-	bt_tishi.setPosition(1100, 500);
-	bt_chupai.setPosition(1100, 540);
-	bt_reselet.setPosition(1100, 580);
-	bt_pass.setPosition(1100, 620);
+	bt_chupai.setPosition(500, 400);
+	bt_chupai.setScale(0.7, 0.7);
+	bt_pass.setPosition(710, 400);
+	bt_pass.setScale(0.7, 0.7);
 	bt_callThree.setPosition(600, 480);
 	bt_callTwo.setPosition(650, 480);
 	bt_callOne.setPosition(700, 480);
@@ -197,6 +195,9 @@ Player::Player()
 	tHead[0].loadFromFile("assets/image/game/房间/no.png");
 	tHead[1].loadFromFile("assets/image/game/房间/dizhu.png");
 	tHead[2].loadFromFile("assets/image/game/房间/nonmin.png");
+	tMeg.loadFromFile("assets/image/game/功能/斗地主/底框.png");
+	sMeg.setTexture(tMeg);
+	sMeg.setPosition(0, 638);
 	sHead.setTexture(tHead[0]);
 	font.loadFromFile("assets/fonts/fSimpleRound.ttf");
 	tNum_rest.setFont(font);
@@ -209,8 +210,6 @@ void Player::Initial(RenderWindow* app)
 {
 	this->app = app;
 	this->bt_pass.app = app;
-	this->bt_tishi.app = app;
-	this->bt_reselet.app = app;
 	this->bt_chupai.app = app;
 	this->bt_callThree.app = app;
 	this->bt_callTwo.app = app;
@@ -236,12 +235,11 @@ void Player::callDizhu(Event& e)
 
 void Player::show()
 {
+	(*app).draw(sMeg);
 	(*app).draw(sHead);
 	if (isMyTime)
 	{
-		bt_tishi.show();
 		bt_chupai.show();
-		bt_reselet.show();
 		bt_pass.show();
 	}
 	if (isCallingDizhu)

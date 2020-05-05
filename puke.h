@@ -8,6 +8,8 @@ public:
 	Card();
 	RenderWindow* app;
 	Sprite sprite;
+	Sound fx;
+	SoundBuffer sbfx;
 	int dt_e;
 	bool isSeleted; //是否被选中
 	bool isOnTop;//最大的牌

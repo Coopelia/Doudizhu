@@ -40,7 +40,9 @@ public:
 	void Initial(RenderWindow* app);
 	void callDizhu(Event& e);//½ÐµØÖ÷
 	void show();
-	Button bt_chupai, bt_pass, bt_tishi, bt_reselet, bt_callThree, bt_callTwo, bt_callOne, bt_callNo;
+	Button bt_chupai, bt_pass, bt_callThree, bt_callTwo, bt_callOne, bt_callNo;
+	Sprite sMeg;
+	Texture tMeg;
 };
 
 class AI :public User

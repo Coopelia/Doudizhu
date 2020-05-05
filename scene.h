@@ -58,6 +58,11 @@ private:
 	Texture tBack_exit;
 	Button bt_exit_ok, bt_exit_cancel;
 
+	bool isOnStore;
+	Sprite sBack_store;
+	Texture tBack_store;
+	Button bt_store_close;
+
 	RenderWindow* app;
 	int value_bg;
 	void Initial(RenderWindow* app);
@@ -71,12 +76,14 @@ private:
 	void Input_fankui(Event& e);
 	void Input_zhanji(Event& e);
 	void Input_exit(Event& e);
+	void Input_store(Event& e);
 	void draw_setting();
 	void draw_mail();
 	void draw_wanfa();
 	void draw_fankui();
 	void draw_zhanji();
 	void draw_exit();
+	void draw_store();
 	void Draw();
 	void SceneClose();
 };
@@ -90,6 +97,8 @@ public:
 	AI ai_1, ai_2;//AI
 	Sprite sOver;
 	Texture tOver[2];
+	Music mu_over;
+	bool isPlayed_sd;
 	MyClock clock_showCall;//出牌倒计时
 	bool isDealing;//是否正在发牌
 	bool isDealDizhu;//是否正在叫地主阶段

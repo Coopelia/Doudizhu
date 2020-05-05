@@ -9,6 +9,8 @@ Card::Card()
 	isOnDesk = false;
 	isDeleted = false;
 	this->app = NULL;
+	sbfx.loadFromFile("assets/Sound/Special/SpecSelectCard.ogg");
+	fx.setBuffer(sbfx);
 }
 
 void Card::onClick(Event& e)
@@ -31,8 +33,12 @@ void Card::onClick(Event& e)
 		else
 			this->isPressed = false;
 	}
-	if(this->isPressed)
+	if (this->isPressed)
+	{
 		this->sprite.setColor(Color(255, 255, 0, 255));
+		this->fx.setVolume(vol_sound);
+		this->fx.play();
+	}
 	else
 		this->sprite.setColor(Color(255, 255, 255, 255));
 }

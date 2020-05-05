@@ -1,5 +1,13 @@
 #include "Button.h"
 
+Button::Button()
+{
+	this->app = NULL;
+	this->PreBehRel = false;
+	this->sbfx.loadFromFile("assets/Sound/Special/SpecOk.ogg");
+	this->fx.setBuffer(sbfx);
+}
+
 void Button::setTextrue(String s)
 {
 	this->t.loadFromFile(s);
@@ -26,6 +34,8 @@ bool Button::onClick(Event& e)
 		{
 			this->PreBehRel = false;
 			flag = true;
+			this->fx.setVolume(vol_sound);
+			this->fx.play();
 		}
 		else
 			flag = false;

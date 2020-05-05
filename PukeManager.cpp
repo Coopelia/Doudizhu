@@ -796,7 +796,7 @@ bool PukeManager::findWithType(PukeType type, int low, int* source_card, int* re
 								continue;
 							if (tem != -1)
 							{
-								if (tem + 1 == temp_hand_card[ii] / 4)
+								if (tem + 1 == temp_hand_card[ii] / 4 && temp_hand_card[ii] < 48)
 								{
 									t++;
 									tem = temp_hand_card[ii] / 4;

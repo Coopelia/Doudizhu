@@ -13,6 +13,7 @@ StartScene::StartScene()
 	isOnFankui = false;
 	isOnZhanji = false;
 	isOnExit = false;
+	isOnStore = false;
 	tBackground1.loadFromFile("assets/image/game/±³¾°/±³¾°1.jpg");
 	tBackground2.loadFromFile("assets/image/game/±³¾°/±³¾°2.jpg");
 	tBackground3.loadFromFile("assets/image/game/±³¾°/±³¾°3.jpg");
@@ -54,6 +55,9 @@ StartScene::StartScene()
 	sBack_exit.setTexture(tBack_exit);
 	bt_exit_ok.setTextrue("assets/image/game/´óÌüµ¯¿ò/#°´Å¥/È·¶¨.png");
 	bt_exit_cancel.setTextrue("assets/image/game/´óÌüµ¯¿ò/#°´Å¥/È¡Ïû.png");
+	tBack_store.loadFromFile("assets/image/game/´ó·ù/ÉÌµê²Ëµ¥±³¾°.png");
+	sBack_store.setTexture(tBack_store);
+	bt_store_close.setTextrue("assets/image/game/´óÌüµ¯¿ò/close.png");
 	font.loadFromFile("assets/fonts/fSimpleRound.ttf");
 	bt_setting_ok.setTextrue("assets/image/game/´óÌüµ¯¿ò/#°´Å¥/È·¶¨.png");
 	bt_Enter.setTextrue("assets/image/game/´óÌü/·¿¼äÈë¿Ú-¶·µØÖ÷.png");
@@ -68,8 +72,8 @@ StartScene::StartScene()
 	bt_zhanji.setTextrue("assets/image/game/´óÌü/²Ëµ¥-Õ½¼¨.png");
 	bt_bgm_left.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/left.png");
 	bt_bgm_right.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/right.png");
-	bt_sound_left.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/left.png"); 
-	bt_sound_right.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/right.png"); 
+	bt_sound_left.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/left.png");
+	bt_sound_right.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/right.png");
 	bt_bg_left.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/left.png");
 	bt_bg_right.setTextrue("assets/image/game/´óÌüµ¯¿ò/ÉèÖÃ/right.png");
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Welcome.ogg");
@@ -90,7 +94,7 @@ void StartScene::Initial(RenderWindow* app)
 	this->bt_wanfa.app = app;
 	this->bt_zhanji.app = app;
 	this->bt_setting_ok.app = app;
-	this->bt_bgm_left.app = app; 
+	this->bt_bgm_left.app = app;
 	this->bt_bgm_right.app = app;
 	this->bt_sound_left.app = app;
 	this->bt_sound_right.app = app;
@@ -102,6 +106,7 @@ void StartScene::Initial(RenderWindow* app)
 	this->bt_zhanji_close.app = app;
 	this->bt_exit_ok.app = app;
 	this->bt_exit_cancel.app = app;
+	this->bt_store_close.app = app;
 	this->mail.initial(app, 230, 180);
 }
 
@@ -141,7 +146,7 @@ void StartScene::draw_setting()
 	sBack_setting.setPosition(200, 60);
 	bt_setting_ok.setPosition(570, 450);
 	bt_bgm_left.setPosition(470, 277);
-	bt_bgm_right.setPosition(570,277);
+	bt_bgm_right.setPosition(570, 277);
 	bt_sound_left.setPosition(470, 378);
 	bt_sound_right.setPosition(570, 378);
 	bt_bg_left.setPosition(660, 330);
@@ -160,7 +165,7 @@ void StartScene::draw_setting()
 	(*app).draw(sBack_setting);
 	(*app).draw(sBackMini);
 	bt_setting_ok.show();
-	bt_bgm_left.show(); 
+	bt_bgm_left.show();
 	bt_bgm_right.show();
 	bt_sound_left.show();
 	bt_sound_right.show();
@@ -176,7 +181,7 @@ void StartScene::draw_mail()
 	bt_mail_close.setPosition(990, 30);
 	(*app).draw(sBack_mail);
 	bt_mail_close.show();
-	if(!mail.isOpened)
+	if (!mail.isOpened)
 		mail.show();
 }
 
@@ -214,13 +219,21 @@ void StartScene::draw_exit()
 	bt_exit_cancel.show();
 }
 
+void StartScene::draw_store()
+{
+	sBack_store.setPosition(200, 60);
+	bt_store_close.setPosition(990, 30);
+	(*app).draw(sBack_store);
+	bt_store_close.show();
+}
+
 void StartScene::Draw()
 {
 	sBackground.setPosition(0, 0);
 	sBack_menu.setPosition(25, 675);
 	sMeinv.setPosition(450, 80);
 	sBackUser.setPosition(0, 0);
-	sUserHead.setPosition(5,5);
+	sUserHead.setPosition(5, 5);
 	sJf.setPosition(100, 25);
 	text_jb.setPosition(150, 28);
 	sRankList.setPosition(50, 100);
@@ -269,6 +282,8 @@ void StartScene::Draw()
 		draw_zhanji();
 	if (isOnExit)
 		draw_exit();
+	if (isOnStore)
+		draw_store();
 }
 
 void StartScene::Input(Event& e)
@@ -285,6 +300,8 @@ void StartScene::Input(Event& e)
 		Input_zhanji(e);
 	else if (isOnExit)
 		Input_exit(e);
+	else if (isOnStore)
+		Input_store(e);
 	else
 		Input_scene(e);
 }
@@ -306,15 +323,17 @@ void StartScene::Input_scene(Event& e)
 		this->isOnZhanji = true;
 	if (bt_exit.onClick(e))
 		this->isOnExit = true;
+	if (bt_store.onClick(e))
+		this->isOnStore = true;
 }
 
 void StartScene::Input_setting(Event& e)
 {
 	if (this->bt_setting_ok.onClick(e))
 		this->isOnSetting = false;
-	if (this->bt_bgm_left.onClick(e)&&vol_bgm>=10)
+	if (this->bt_bgm_left.onClick(e) && vol_bgm >= 10)
 		vol_bgm -= 10;
-	if (this->bt_bgm_right.onClick(e)&&vol_bgm<=90)
+	if (this->bt_bgm_right.onClick(e) && vol_bgm <= 90)
 		vol_bgm += 10;
 	if (this->bt_sound_left.onClick(e) && vol_sound >= 10)
 		vol_sound -= 10;
@@ -364,6 +383,12 @@ void StartScene::Input_exit(Event& e)
 		isOnExit = false;
 }
 
+void StartScene::Input_store(Event& e)
+{
+	if (bt_store_close.onClick(e))
+		isOnStore = false;
+}
+
 void StartScene::SceneClose()
 {
 	bgm.stop();
@@ -379,6 +404,7 @@ GameScene::GameScene()
 	isDealDizhu = false;
 	isPlaying = false;
 	isGameover = false;
+	isPlayed_sd = false;
 	puke_manager.human = &this->human;
 	puke_manager.ai_1 = &this->ai_1;
 	puke_manager.ai_2 = &this->ai_2;
@@ -405,6 +431,10 @@ void GameScene::Start()
 	isRunning = true;
 	isDealing = true;
 	isDealDizhu = false;
+	isExit = false;
+	isPlaying = false;
+	isGameover = false;
+	isPlayed_sd = false;
 }
 
 void GameScene::Update()
@@ -416,7 +446,7 @@ void GameScene::Update()
 	ai_2.update();
 	if (isDealing)
 	{
-		if (puke_manager.clock_deal.isRun==false)
+		if (puke_manager.clock_deal.isRun == false)
 		{
 			puke_manager.clearAll();
 			puke_manager.clock_deal.start();
@@ -445,18 +475,16 @@ void GameScene::Update()
 	}
 	if (isGameover)
 	{
-		if (human.sid==DIZHU)
+		if (human.sid == DIZHU)
 		{
 			if (human.num_card == 0)
 			{
-				sOver.setTexture(tOver[0]);
 				human.isWin = true;
 				ai_1.isWin = false;
 				ai_2.isWin = false;
 			}
 			else
 			{
-				sOver.setTexture(tOver[1]);
 				human.isWin = false;
 				ai_1.isWin = true;
 				ai_2.isWin = true;
@@ -468,14 +496,12 @@ void GameScene::Update()
 			{
 				if (ai_1.num_card == 0)
 				{
-					sOver.setTexture(tOver[1]);
 					human.isWin = false;
 					ai_1.isWin = true;
 					ai_2.isWin = false;
 				}
 				else
 				{
-					sOver.setTexture(tOver[0]);
 					human.isWin = true;
 					ai_1.isWin = false;
 					ai_2.isWin = true;
@@ -485,18 +511,29 @@ void GameScene::Update()
 			{
 				if (ai_2.num_card == 0)
 				{
-					sOver.setTexture(tOver[1]);
 					human.isWin = false;
 					ai_1.isWin = false;
 					ai_2.isWin = true;
 				}
 				else
 				{
-					sOver.setTexture(tOver[0]);
 					human.isWin = true;
 					ai_1.isWin = true;
 					ai_2.isWin = false;
 				}
+			}
+		}
+		if (!isPlayed_sd)
+		{
+			if (human.isWin)
+			{
+				sOver.setTexture(tOver[0]);
+				mu_over.openFromFile("assets/Sound/MusicEx/MusicEx_Win.ogg");
+			}
+			else
+			{
+				sOver.setTexture(tOver[1]);
+				mu_over.openFromFile("assets/Sound/MusicEx/MusicEx_Lose.ogg");
 			}
 		}
 	}
@@ -505,8 +542,8 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	sBackground.setPosition(0, 0);
-	human.setPosition(34, 625);
-	human.tNum_rest.setPosition(110, 645);
+	human.setPosition(34, 550);
+	human.tNum_rest.setPosition(140, 600);
 	ai_1.setPosition(1120, 200);
 	ai_2.setPosition(85, 200);
 	(*app).draw(sBackground);
@@ -514,24 +551,28 @@ void GameScene::Draw()
 	(*app).draw(human.tNum_rest);
 	ai_1.show();
 	ai_2.show();
-	puke_manager.puke.Back.setPosition(182, 150);
-	puke_manager.puke.Back.setScale(0.4, 0.4);
-	ai_1.tNum_rest.setPosition(1038, 290);
-	(*app).draw(puke_manager.puke.Back);
-	(*app).draw(ai_1.tNum_rest);
 	puke_manager.puke.Back.setPosition(1010, 150);
 	puke_manager.puke.Back.setScale(0.4, 0.4);
-	ai_2.tNum_rest.setPosition(210, 290);
+	ai_1.tNum_rest.setPosition(1038, 180);
+	ai_1.tNum_rest.setCharacterSize(40);
+	ai_1.tNum_rest.setFillColor(Color::Yellow);
+	(*app).draw(puke_manager.puke.Back);
+	(*app).draw(ai_1.tNum_rest);
+	puke_manager.puke.Back.setPosition(182, 150);
+	puke_manager.puke.Back.setScale(0.4, 0.4);
+	ai_2.tNum_rest.setPosition(210, 180);
+	ai_2.tNum_rest.setCharacterSize(40);
+	ai_2.tNum_rest.setFillColor(Color::Yellow);
 	(*app).draw(puke_manager.puke.Back);
 	(*app).draw(ai_2.tNum_rest);
 	if (isDealDizhu)
 	{
 		human.sCall.setPosition(610, 430);
-		human.sCall.setScale(1.5, 1.5);
+		human.sCall.setScale(1, 1);
 		ai_1.sCall.setPosition(905, 150);
-		ai_1.sCall.setScale(1.5, 1.5);
+		ai_1.sCall.setScale(1, 1);
 		ai_2.sCall.setPosition(300, 150);
-		ai_2.sCall.setScale(1.5, 1.5);
+		ai_2.sCall.setScale(1, 1);
 		(*app).draw(human.sCall);
 		(*app).draw(ai_1.sCall);
 		(*app).draw(ai_2.sCall);
@@ -571,21 +612,24 @@ void GameScene::Draw()
 	//»­µ¹¼ÆÊ±
 	if (human.isMyTime)
 	{
-		human.sClock.setPosition(615, 370);
+		human.sClock.setScale(0.8, 0.8);
+		human.sClock.setPosition(620, 372);
 		human.tDaojishi.setPosition(649, 402);
 		(*app).draw(human.sClock);
 		(*app).draw(human.tDaojishi);
 	}
 	if (ai_1.isMyTime)
 	{
-		ai_1.sClock.setPosition(897, 165);
+		ai_1.sClock.setScale(0.8, 0.8);
+		ai_1.sClock.setPosition(902, 167);
 		ai_1.tDaojishi.setPosition(930, 197);
 		(*app).draw(ai_1.sClock);
 		(*app).draw(ai_1.tDaojishi);
 	}
 	if (ai_2.isMyTime)
 	{
-		ai_2.sClock.setPosition(275, 165);
+		ai_2.sClock.setScale(0.8, 0.8);
+		ai_2.sClock.setPosition(280, 167);
 		ai_2.tDaojishi.setPosition(309, 197);
 		(*app).draw(ai_2.sClock);
 		(*app).draw(ai_2.tDaojishi);
@@ -603,7 +647,7 @@ void GameScene::Draw()
 		puke_manager.puke.Back.setScale(0.3, 0.3);
 		(*app).draw(puke_manager.puke.Back);
 	}
-	else if(!isDealDizhu&&!isDealing)
+	else if (!isDealDizhu && !isDealing)
 	{
 		puke_manager.sDizhuCard[0].sprite.setPosition(550, 10);
 		puke_manager.sDizhuCard[0].sprite.setScale(0.5, 0.5);
@@ -615,8 +659,34 @@ void GameScene::Draw()
 		(*app).draw(puke_manager.sDizhuCard[1].sprite);
 		(*app).draw(puke_manager.sDizhuCard[2].sprite);
 	}
-	if (isGameover)
+	if (isGameover)//½áÊø
+	{
+		int tx = 960, ty = 250;
+		for (int i = 0; i < ai_1.num_card; i++)
+		{
+			puke_manager.puke.c[ai_1.hand_card[i] / 4][ai_1.hand_card[i] % 4].sprite.setPosition(tx - (ai_1.num_card - i) * 20, ty);
+			puke_manager.puke.c[ai_1.hand_card[i] / 4][ai_1.hand_card[i] % 4].sprite.setScale(0.5, 0.5);
+			(*app).draw(puke_manager.puke.c[ai_1.hand_card[i] / 4][ai_1.hand_card[i] % 4].sprite);
+		}
+
+		tx = 270, ty = 150;
+		for (int i = 0; i < ai_2.num_card; i++)
+		{
+			puke_manager.puke.c[ai_2.hand_card[i] / 4][ai_2.hand_card[i] % 4].sprite.setPosition(tx + i * 20, ty);
+			puke_manager.puke.c[ai_2.hand_card[i] / 4][ai_2.hand_card[i] % 4].sprite.setScale(0.5, 0.5);
+			(*app).draw(puke_manager.puke.c[ai_2.hand_card[i] / 4][ai_2.hand_card[i] % 4].sprite);
+		}
+
 		(*app).draw(sOver);
+		if (!isPlayed_sd)
+		{
+			isPlayed_sd = true;
+			bgm.stop();
+			mu_over.setLoop(false);
+			mu_over.setVolume(vol_sound);
+			mu_over.play();
+		}
+	}
 }
 
 void GameScene::player_turn_input(Event& e)
@@ -624,15 +694,15 @@ void GameScene::player_turn_input(Event& e)
 	//½ÐµØÖ÷½×¶Î
 	if (isDealDizhu)
 	{
-		if(human.isCallingDizhu&&human.s_call==-1)
+		if (human.isCallingDizhu && human.s_call == -1)
 			human.callDizhu(e);
 		if (human.s_call != -1)
 			ai_1.isCallingDizhu = true;
-		if (ai_1.isCallingDizhu&&ai_1.s_call==-1)
+		if (ai_1.isCallingDizhu && ai_1.s_call == -1)
 			ai_1.callDizhu();
 		if (ai_1.s_call != -1)
 			ai_2.isCallingDizhu = true;
-		if (ai_2.isCallingDizhu&&ai_2.s_call==-1)
+		if (ai_2.isCallingDizhu && ai_2.s_call == -1)
 			ai_2.callDizhu();
 		if (human.s_call != -1 && ai_1.s_call != -1 && ai_2.s_call != -1)
 		{
@@ -715,13 +785,13 @@ void GameScene::player_turn_input(Event& e)
 	else if (ai_1.isMyTime)
 	{
 		puke_manager.autoSeleteCard(&ai_1);
-		if(!ai_1.isMyTime)
+		if (!ai_1.isMyTime)
 			ai_2.isMyTime = true;
 	}
 	else if (ai_2.isMyTime)
 	{
 		puke_manager.autoSeleteCard(&ai_2);
-		if(!ai_2.isMyTime)
+		if (!ai_2.isMyTime)
 			human.isMyTime = true;
 	}
 }
