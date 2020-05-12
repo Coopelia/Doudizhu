@@ -141,7 +141,7 @@ void StartScene::Update()
 	}
 }
 
-void StartScene::draw_setting()
+void StartScene::draw_setting(RenderWindow* app)
 {
 	sBack_setting.setPosition(200, 60);
 	bt_setting_ok.setPosition(570, 450);
@@ -209,7 +209,7 @@ void StartScene::draw_zhanji()
 	bt_zhanji_close.show();
 }
 
-void StartScene::draw_exit()
+void StartScene::draw_exit(RenderWindow* app)
 {
 	sBack_exit.setPosition(360, 90);
 	bt_exit_ok.setPosition(480, 400);
@@ -271,7 +271,7 @@ void StartScene::Draw()
 		(*app).draw(sRedPoint);
 	}
 	if (isOnSetting)
-		draw_setting();
+		draw_setting(app);
 	if (isOnMail)
 		draw_mail();
 	if (isOnWanfa)
@@ -281,7 +281,7 @@ void StartScene::Draw()
 	if (isOnZhanji)
 		draw_zhanji();
 	if (isOnExit)
-		draw_exit();
+		draw_exit(app);
 	if (isOnStore)
 		draw_store();
 }
@@ -412,8 +412,19 @@ GameScene::GameScene()
 	sBackground.setTexture(tBackground1);
 	tOver[0].loadFromFile("assets/image/game/斗地主结算/切图/你赢了.png");
 	tOver[1].loadFromFile("assets/image/game/斗地主结算/切图/你输了.png");
-	sOver.setPosition(363, 267);
+	sOver.setPosition(0, 0);
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Normal.ogg");
+	text_jb.setFont(font);
+	text_jb.setCharacterSize(36);
+	text_jb.setFillColor(Color::Yellow);
+	text_jb.setPosition(80, 655);
+	text_score.setFont(font);
+	text_score.setCharacterSize(36);
+	text_score.setPosition(1100, 655);
+	text_score.setFillColor(Color::Yellow);
+	text_over.setFont(font);
+	text_over.setCharacterSize(40);
+	text_over.setPosition(800, 400);
 	bgm.setLoop(true);
 }
 
@@ -423,11 +434,25 @@ void GameScene::Initial(RenderWindow* app)
 	this->human.Initial(app);
 	this->ai_1.Initial(app);
 	this->ai_2.Initial(app);
+	this->bt_over_back.app = app;
+	this->bt_over_restart.app = app;
+	this->bt_exit.app = app;
+	this->bt_exit_cancel.app = app;
+	this->bt_exit_ok.app = app;
+	this->bt_setting.app = app;
+	this->bt_setting_ok.app = app;
+	this->bt_bgm_left.app = app;
+	this->bt_bgm_right.app = app;
+	this->bt_sound_left.app = app;
+	this->bt_sound_right.app = app;
+	this->bt_bg_left.app = app;
+	this->bt_bg_right.app = app;
 }
 
 void GameScene::Start()
 {
 	bgm.play();
+	score = 0;
 	isRunning = true;
 	isDealing = true;
 	isDealDizhu = false;
@@ -525,13 +550,18 @@ void GameScene::Update()
 		}
 		if (!isPlayed_sd)
 		{
+			text_over.setString(std::to_string(score * 100));
 			if (human.isWin)
 			{
+				text_over.setFillColor(Color::Yellow);
+				jb += score * 100;
 				sOver.setTexture(tOver[0]);
 				mu_over.openFromFile("assets/Sound/MusicEx/MusicEx_Win.ogg");
 			}
 			else
 			{
+				text_over.setFillColor(Color::Cyan);
+				jb -= score * 100;
 				sOver.setTexture(tOver[1]);
 				mu_over.openFromFile("assets/Sound/MusicEx/MusicEx_Lose.ogg");
 			}
@@ -544,10 +574,14 @@ void GameScene::Draw()
 	sBackground.setPosition(0, 0);
 	human.setPosition(34, 550);
 	human.tNum_rest.setPosition(140, 600);
+	text_jb.setString(std::to_string(jb));
+	text_score.setString(std::to_string(score));
 	ai_1.setPosition(1120, 200);
 	ai_2.setPosition(85, 200);
 	(*app).draw(sBackground);
 	human.show();
+	(*app).draw(text_jb);
+	(*app).draw(text_score);
 	(*app).draw(human.tNum_rest);
 	ai_1.show();
 	ai_2.show();
@@ -565,6 +599,10 @@ void GameScene::Draw()
 	ai_2.tNum_rest.setFillColor(Color::Yellow);
 	(*app).draw(puke_manager.puke.Back);
 	(*app).draw(ai_2.tNum_rest);
+	bt_exit.setPosition(1210, 12);
+	bt_setting.setPosition(1130, 10);
+	bt_setting.show();
+	bt_exit.show();
 	if (isDealDizhu)
 	{
 		human.sCall.setPosition(610, 430);
@@ -659,6 +697,10 @@ void GameScene::Draw()
 		(*app).draw(puke_manager.sDizhuCard[1].sprite);
 		(*app).draw(puke_manager.sDizhuCard[2].sprite);
 	}
+	if (isOnExit)
+		draw_exit(app);
+	if (isOnSetting)
+		draw_setting(app);
 	if (isGameover)//结束
 	{
 		int tx = 960, ty = 250;
@@ -677,7 +719,10 @@ void GameScene::Draw()
 			(*app).draw(puke_manager.puke.c[ai_2.hand_card[i] / 4][ai_2.hand_card[i] % 4].sprite);
 		}
 
+		human.sHead.setPosition(620, 400);
 		(*app).draw(sOver);
+		(*app).draw(human.sHead);
+		(*app).draw(text_over);
 		if (!isPlayed_sd)
 		{
 			isPlayed_sd = true;
@@ -697,13 +742,23 @@ void GameScene::player_turn_input(Event& e)
 		if (human.isCallingDizhu && human.s_call == -1)
 			human.callDizhu(e);
 		if (human.s_call != -1)
+		{
+			score += human.s_call * 10;
 			ai_1.isCallingDizhu = true;
+		}
 		if (ai_1.isCallingDizhu && ai_1.s_call == -1)
 			ai_1.callDizhu();
 		if (ai_1.s_call != -1)
+		{
+			score += ai_1.s_call * 10;
 			ai_2.isCallingDizhu = true;
+		}
 		if (ai_2.isCallingDizhu && ai_2.s_call == -1)
 			ai_2.callDizhu();
+		if (ai_2.s_call != -1)
+		{
+			score += ai_2.s_call * 10;
+		}
 		if (human.s_call != -1 && ai_1.s_call != -1 && ai_2.s_call != -1)
 		{
 			if (human.s_call == 0 && ai_1.s_call == 0 && ai_2.s_call == 0)
@@ -796,27 +851,46 @@ void GameScene::player_turn_input(Event& e)
 	}
 }
 
+void GameScene::Input_exit(Event& e)
+{
+	if (bt_exit_ok.onClick(e))
+		isExit = true;
+	if (bt_exit_cancel.onClick(e))
+		isOnExit = false;
+}
+
 void GameScene::Input(Event& e)
 {
 	if (!isGameover)
 	{
-		if (e.type == Event::MouseButtonPressed && e.key.code == Mouse::Left)
+		if (bt_setting.onClick(e))
+			isOnSetting = true;
+		if (bt_exit.onClick(e))
+			isOnExit = true;
+		if (isOnSetting)
+			Input_setting(e);
+		else if (isOnExit)
+			Input_exit(e);
+		else
 		{
-			mouseRect.isMousePressed = true;
-			px1 = Mouse::getPosition(*app).x;
-			py1 = Mouse::getPosition(*app).y;
+			if (e.type == Event::MouseButtonPressed && e.key.code == Mouse::Left)
+			{
+				mouseRect.isMousePressed = true;
+				px1 = Mouse::getPosition(*app).x;
+				py1 = Mouse::getPosition(*app).y;
+			}
+			if (mouseRect.isMousePressed)
+			{
+				px2 = Mouse::getPosition(*app).x;
+				py2 = Mouse::getPosition(*app).y;
+			}
+			if (e.type == Event::MouseButtonReleased && e.key.code == Mouse::Left)
+				mouseRect.isMousePressed = false;
+			for (int i = 0; i < 14; i++)
+				for (int j = 0; j < 4; j++)
+					puke_manager.puke.c[i][j].onClick(e);
+			player_turn_input(e);
 		}
-		if (mouseRect.isMousePressed)
-		{
-			px2 = Mouse::getPosition(*app).x;
-			py2 = Mouse::getPosition(*app).y;
-		}
-		if (e.type == Event::MouseButtonReleased && e.key.code == Mouse::Left)
-			mouseRect.isMousePressed = false;
-		for (int i = 0; i < 14; i++)
-			for (int j = 0; j < 4; j++)
-				puke_manager.puke.c[i][j].onClick(e);
-		player_turn_input(e);
 	}
 }
 

@@ -4,6 +4,7 @@
 #include<string>
 #include<windows.h>
 #include<iostream>
+#include<vector>
 #define WIDTH 1280
 #define HEIGHT 720
 using namespace sf;
