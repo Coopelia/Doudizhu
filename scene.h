@@ -96,18 +96,21 @@ public:
 	PukeManager puke_manager;//扑克管理器
 	Player human;//玩家
 	AI ai_1, ai_2;//AI
-	Sprite sOver;
-	Texture tOver[2];
-	Text text_score, text_jb, text_over;
+	Sprite sOver, sShoot;
+	Texture tOver[2], tShoot;
+	Text text_score, text_jb, text_over, text_shoot;
 	Button bt_over_back, bt_over_restart;
 	int score;
+	int elapsTime_shoot;
 	Music mu_over;
 	MyClock clock_showCall;//出牌倒计时
+	Clock clock_shoot;
 	bool isPlayed_sd;
 	bool isDealing;//是否正在发牌
 	bool isDealDizhu;//是否正在叫地主阶段
 	bool isPlaying;
 	bool isGameover;//有人手牌已全部打出，游戏结束
+	bool isShowOver;
 	GameScene();
 	void Initial(RenderWindow* app);
 	void Start();//场景运行前执行一次

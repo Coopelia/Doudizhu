@@ -42,53 +42,66 @@ void Game::GameOver()
 
 void Game::Update()
 {
-	if (start_scene.isExit)
+	if (OnStartScene)
 	{
-		OnStartScene = false;
-		OnPlayScene = true;
+		if (start_scene.isExit)
+		{
+			OnStartScene = false;
+			OnPlayScene = true;
+			start_scene.isExit = false;
+		}
+		if (!start_scene.isRunning)
+		{
+			game_scene.SceneClose();
+			start_scene.Start();
+		}
+		start_scene.Update();
 	}
-	if (game_scene.isExit)
+	if (OnPlayScene)
 	{
-		OnStartScene = true;
-		OnPlayScene = false;
+		if (game_scene.isExit)
+		{
+			OnStartScene = true;
+			OnPlayScene = false;
+			game_scene.isExit = false;
+		}
+		if (!game_scene.isRunning)
+		{
+			start_scene.SceneClose();
+			game_scene.Start();
+		}
+		game_scene.Update();
 	}
-	start_scene.Update();
-	game_scene.Update();
+}
+
+void Game::Input(Event& e)
+{
+	if (OnStartScene)
+		start_scene.Input(e);
+	else if (OnPlayScene)
+		game_scene.Input(e);
+	e.type = Event::Count;
+}
+
+void Game::Draw()
+{
+	if (OnStartScene)
+		start_scene.Draw();
+	else if (OnPlayScene)
+		game_scene.Draw();
 }
 
 void Game::Run()
 {
 	while ((*app).isOpen())
 	{
-		Update();
 		Event e;
-		while ((*app).pollEvent(e))
-		{
-			if (e.type == Event::Closed)
-				(*app).close();
-		}
-		if (OnStartScene)
-		{
-			start_scene.isExit = false;
-			if (!start_scene.isRunning)
-			{
-				game_scene.SceneClose();
-				start_scene.Start();
-			}
-			start_scene.Input(e);
-			start_scene.Draw();
-		}
-		else if (OnPlayScene)
-		{
-			game_scene.isExit = false;
-			if (!game_scene.isRunning)
-			{
-				start_scene.SceneClose();
-				game_scene.Start();
-			}
-			game_scene.Input(e);
-			game_scene.Draw();
-		}
+		(*app).pollEvent(e);
+		if (e.type == Event::Closed)
+			(*app).close();
+		Input(e);
+		Update();
+		Draw();
 		(*app).display();
 	}
 }

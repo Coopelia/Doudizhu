@@ -11,6 +11,10 @@ Card::Card()
 	this->app = NULL;
 	sbfx.loadFromFile("assets/Sound/Special/SpecSelectCard.ogg");
 	fx.setBuffer(sbfx);
+	fx.setLoop(false);
+	sbf_shoot.loadFromFile("assets/Sound/2464.wav");
+	sound_shoot.setBuffer(sbf_shoot);
+	sound_shoot.setLoop(false);
 }
 
 void Card::onClick(Event& e)
@@ -41,6 +45,22 @@ void Card::onClick(Event& e)
 	}
 	else
 		this->sprite.setColor(Color(255, 255, 255, 255));
+}
+
+bool Card::onShooted(RenderWindow* app, Event& e)
+{
+	bool flag = false;
+	FloatRect box = sprite.getGlobalBounds();
+	if (e.type == Event::MouseButtonReleased && e.key.code == Mouse::Left)
+	{
+		if (Mouse::getPosition(*app).x >= box.left && Mouse::getPosition(*app).x <= (box.left + box.width) && Mouse::getPosition(*app).y >= box.top && Mouse::getPosition(*app).y <= (box.top + box.height))
+		{
+			flag = true;
+			this->sound_shoot.setVolume(vol_sound);
+			this->sound_shoot.play();
+		}
+	}
+	return flag;
 }
 
 Puke::Puke()

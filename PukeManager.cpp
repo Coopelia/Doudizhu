@@ -21,6 +21,7 @@ PukeManager::PukeManager()
 		deskCard[i] = -1;
 		seletedCard[i] = -1;
 	}
+	isGunCharm = false;
 }
 
 void PukeManager::clearAll()
@@ -31,18 +32,31 @@ void PukeManager::clearAll()
 	(*ai_1).isMyTime = false;
 	(*ai_2).isMyTime = false;
 	(*human).isMyTime = false;
+	(*ai_1).isWin = false;
+	(*ai_2).isWin = false;
+	(*human).isWin = false;
+	(*ai_1).isCallingDizhu = false;
+	(*ai_2).isCallingDizhu = false;
+	(*human).isCallingDizhu = false;
 	(*ai_1).dec = NOT;
 	(*ai_2).dec = NOT;
 	(*human).dec = NOT;
 	(*ai_1).num_card = 0;
 	(*ai_2).num_card = 0;
 	(*human).num_card = 0;
+	(*ai_1).s_call = -1;
+	(*ai_2).s_call = -1;
+	(*human).s_call = -1;
 	for (int i = 0; i < 20; i++)
 	{
 		(*ai_1).hand_card[i] = -1;
 		(*ai_2).hand_card[i] = -1;
 		(*human).hand_card[i] = -1;
 	}
+	puke_dt_x = 0;
+	puke_dt_e = 0;
+	puke_chupai_lx = 640;
+	puke_chupai_dx = 50;
 	num_desk = 0;
 	num_seleted = 0;
 	num_temp = 54;
@@ -55,6 +69,21 @@ void PukeManager::clearAll()
 		deskCard[i] = -1;
 		seletedCard[i] = -1;
 	}
+	for (int i = 0; i < 13; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			puke.c[i][j].dt_e = 0;
+			puke.c[i][j].isDeleted = false;
+			puke.c[i][j].isOnDesk = false;
+			puke.c[i][j].isOnTop = false;
+			puke.c[i][j].isPressed = false;
+			puke.c[i][j].isSeleted = false;
+			puke.c[i][j].sprite.setPosition(-100, -100);
+		}
+	}
+	isGunCharm = false;
+	gunCharm.clear();
 }
 
 void PukeManager::deal()
@@ -133,6 +162,12 @@ void PukeManager::deal_dizhuCard()
 	}
 }
 
+void PukeManager::Start()
+{
+	//gunCharm.start();
+	clearAll();
+}
+
 void PukeManager::update()
 {
 	puke_dt_e = 55 - (*human).num_card;
@@ -170,11 +205,23 @@ void PukeManager::update()
 		puke.c[k][l].sprite.setPosition(puke_dt_x + i * puke_dt_e, posY);
 	}
 
+	if (num_desk == 0)
+		isGunCharm = false;
+
 	int k = 0;
 	for (int i = 0; i < num_desk; i++)
 	{
-		puke.c[deskCard[i] / 4][deskCard[i] % 4].sprite.setPosition(puke_chupai_lx + (k++) * puke_chupai_dx, 280);
-		puke.c[deskCard[i] / 4][deskCard[i] % 4].sprite.setScale(0.5, 0.5);
+		if (isGunCharm)
+			gunCharm.updata();
+		else
+		{
+			gunCharm.puke_pos[i].x = puke_chupai_lx + (k++) * puke_chupai_dx;
+			gunCharm.puke_pos[i].y = 280;
+			gunCharm.puke_scale[i] = 0.5;
+			gunCharm.num = num_desk;
+		}
+		puke.c[deskCard[i] / 4][deskCard[i] % 4].sprite.setPosition(gunCharm.puke_pos[i].x, gunCharm.puke_pos[i].y);
+		puke.c[deskCard[i] / 4][deskCard[i] % 4].sprite.setScale(gunCharm.puke_scale[i], gunCharm.puke_scale[i]);
 		puke.c[deskCard[i] / 4][deskCard[i] % 4].isOnDesk = true;
 	}
 
@@ -210,6 +257,19 @@ void PukeManager::update()
 		dfs_card.dfs(dfs_card.a, 0);
 		std::cout << dfs_card.ans << std::endl;
 	}*/
+}
+
+void PukeManager::removeFromDesk(int i)
+{
+	for (int j = i; j < num_desk - 1; j++)
+	{
+		deskCard[j] = deskCard[j + 1];
+		gunCharm.puke_pos[j].x = gunCharm.puke_pos[j + 1].x;
+		gunCharm.puke_pos[j].y = gunCharm.puke_pos[j + 1].y;
+		gunCharm.puke_scale[j] = gunCharm.puke_scale[j + 1];
+	}
+	num_desk--;
+	gunCharm.num--;
 }
 
 bool PukeManager::findWithType(PukeType type, int low, int* source_card, int* result_card)
@@ -964,6 +1024,8 @@ void PukeManager::autoSeleteCard(AI* ai)
 		{
 			bool isOk = false;
 			PukeType desk_type = checkType(deskCard, num_desk);
+			if (num_desk > 0 && checkType(deskCard, num_desk) == illegal)
+				desk_type = rocket;
 			if (desk_type == rocket)
 				isOk = false;
 			else if (num_t <= 3)
@@ -988,12 +1050,10 @@ void PukeManager::autoSeleteCard(AI* ai)
 								(*ai).removeCard(i * 4 + j);
 							}
 						}
-						else
-							isOk = false;
 					}
 				}
 			}
-			else
+			if(isOk==false)
 			{
 				int selist[20];
 				memset(selist, -1, sizeof(selist));
@@ -1300,8 +1360,10 @@ void PukeManager::JudgeCard(Player& human)
 	bool isOk = false;
 	sort_seleted();
 	PukeType desk_type = checkType(deskCard, num_desk);
+	if (num_desk > 0 && checkType(deskCard, num_desk) == illegal)
+		desk_type = rocket;
 	PukeType seleted_type = checkType(seletedCard, num_seleted);
-	if (seleted_type == illegal) //不合法
+	if (seleted_type == illegal)//不合法
 		isOk = false;
 	else //合法
 	{

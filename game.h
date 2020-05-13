@@ -15,6 +15,8 @@ public:
 	Game();
 	~Game();
 	void Update();//每帧执行一次
+	void Input(Event& e);
+	void Draw();
 	void GameOver();//游戏结束
 	void Run();//游戏运行
 };

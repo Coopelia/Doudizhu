@@ -405,14 +405,21 @@ GameScene::GameScene()
 	isPlaying = false;
 	isGameover = false;
 	isPlayed_sd = false;
+	isShowOver = false;
 	puke_manager.human = &this->human;
 	puke_manager.ai_1 = &this->ai_1;
 	puke_manager.ai_2 = &this->ai_2;
 	tBackground1.loadFromFile("assets/image/game/房间/room_bg.png");
 	sBackground.setTexture(tBackground1);
+	bt_over_back.setTextrue("assets/image/game/功能/斗地主/icon_返回.png");
+	bt_over_back.setPosition(10, 10);
+	bt_over_restart.setTextrue("assets/image/game/功能/斗地主/按钮_继续游戏.png");
+	bt_over_restart.setPosition(800, 510);
 	tOver[0].loadFromFile("assets/image/game/斗地主结算/切图/你赢了.png");
 	tOver[1].loadFromFile("assets/image/game/斗地主结算/切图/你输了.png");
 	sOver.setPosition(0, 0);
+	tShoot.loadFromFile("assets/image/game/其他/shoot.png");
+	sShoot.setTexture(tShoot);
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Normal.ogg");
 	text_jb.setFont(font);
 	text_jb.setCharacterSize(36);
@@ -425,6 +432,9 @@ GameScene::GameScene()
 	text_over.setFont(font);
 	text_over.setCharacterSize(40);
 	text_over.setPosition(800, 400);
+	text_shoot.setFont(font);
+	text_shoot.setCharacterSize(36);
+	text_shoot.setFillColor(Color::Blue);
 	bgm.setLoop(true);
 }
 
@@ -453,6 +463,7 @@ void GameScene::Start()
 {
 	bgm.play();
 	score = 0;
+	elapsTime_shoot = 0;
 	isRunning = true;
 	isDealing = true;
 	isDealDizhu = false;
@@ -460,6 +471,8 @@ void GameScene::Start()
 	isPlaying = false;
 	isGameover = false;
 	isPlayed_sd = false;
+	isShowOver = false;
+	puke_manager.Start();
 }
 
 void GameScene::Update()
@@ -567,6 +580,18 @@ void GameScene::Update()
 			}
 		}
 	}
+	if (puke_manager.isGunCharm)
+	{
+		elapsTime_shoot += clock_shoot.restart().asMilliseconds();
+		if (elapsTime_shoot > 4000)
+		{
+			elapsTime_shoot = 0;
+			puke_manager.isGunCharm = false;
+		}
+		(*app).setMouseCursorVisible(false);
+	}
+	else
+		(*app).setMouseCursorVisible(true);
 }
 
 void GameScene::Draw()
@@ -628,7 +653,6 @@ void GameScene::Draw()
 	{
 		int k = puke_manager.deskCard[i] / 4;
 		int l = puke_manager.deskCard[i] % 4;
-		puke_manager.puke.c[k][l].sprite.setScale(0.6, 0.6);
 		(*app).draw(puke_manager.puke.c[k][l].sprite);
 	}
 	//过
@@ -719,18 +743,34 @@ void GameScene::Draw()
 			(*app).draw(puke_manager.puke.c[ai_2.hand_card[i] / 4][ai_2.hand_card[i] % 4].sprite);
 		}
 
-		human.sHead.setPosition(620, 400);
-		(*app).draw(sOver);
-		(*app).draw(human.sHead);
-		(*app).draw(text_over);
 		if (!isPlayed_sd)
 		{
+			isShowOver = true;
 			isPlayed_sd = true;
 			bgm.stop();
 			mu_over.setLoop(false);
 			mu_over.setVolume(vol_sound);
 			mu_over.play();
 		}
+		if (isShowOver)
+		{
+			human.sHead.setPosition(620, 400);
+			(*app).draw(sOver);
+			(*app).draw(human.sHead);
+			(*app).draw(text_over);
+			bt_over_back.show();
+			bt_over_restart.show();
+		}
+	}
+	if (puke_manager.isGunCharm)
+	{
+		Vector2i mpos = Mouse::getPosition(*app);
+		sShoot.setOrigin(25, 25);
+		sShoot.setPosition(mpos.x, mpos.y);
+		text_shoot.setString(std::to_string(4 - elapsTime_shoot / 1000) + "." + std::to_string(1000 - elapsTime_shoot % 1000));
+		text_shoot.setPosition(mpos.x + 30, mpos.y);
+		(*app).draw(sShoot);
+		(*app).draw(text_shoot);
 	}
 }
 
@@ -805,36 +845,46 @@ void GameScene::player_turn_input(Event& e)
 	//出牌阶段
 	if (human.isMyTime)
 	{
-		if (!human.clock_daojishi.isRun)
-			human.clock_daojishi.start();
-		human.clock_daojishi.update();
-		human.tDaojishi.setString(std::to_string(30 - human.clock_daojishi.second));
-		human.dec = NOT;
-		if (human.bt_chupai.onClick(e))
-		{
-			for (int i = 0; i < 14; i++)
-			{
-				for (int j = 0; j < 4; j++)
-				{
-					if (puke_manager.puke.c[i][j].isSeleted)
-					{
-						puke_manager.addToJudge(i, j);
-					}
-				}
-			}
-			puke_manager.JudgeCard(human);
-			if (human.dec != NOT)
-			{
-				ai_1.isMyTime = true;
-				human.clock_daojishi.stop();
-			}
-		}
-		else if (human.bt_pass.onClick(e))
+		if (human.clock_daojishi.second > 30)
 		{
 			human.dec = PASS;
 			human.isMyTime = false;
 			ai_1.isMyTime = true;
 			human.clock_daojishi.stop();
+		}
+		else
+		{
+			if (!human.clock_daojishi.isRun)
+				human.clock_daojishi.start();
+			human.clock_daojishi.update();
+			human.tDaojishi.setString(std::to_string(30 - human.clock_daojishi.second));
+			human.dec = NOT;
+			if (human.bt_chupai.onClick(e))
+			{
+				for (int i = 0; i < 14; i++)
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						if (puke_manager.puke.c[i][j].isSeleted)
+						{
+							puke_manager.addToJudge(i, j);
+						}
+					}
+				}
+				puke_manager.JudgeCard(human);
+				if (human.dec != NOT)
+				{
+					ai_1.isMyTime = true;
+					human.clock_daojishi.stop();
+				}
+			}
+			else if (human.bt_pass.onClick(e))
+			{
+				human.dec = PASS;
+				human.isMyTime = false;
+				ai_1.isMyTime = true;
+				human.clock_daojishi.stop();
+			}
 		}
 	}
 	else if (ai_1.isMyTime)
@@ -854,7 +904,10 @@ void GameScene::player_turn_input(Event& e)
 void GameScene::Input_exit(Event& e)
 {
 	if (bt_exit_ok.onClick(e))
+	{
 		isExit = true;
+		isOnExit = false;
+	}
 	if (bt_exit_cancel.onClick(e))
 		isOnExit = false;
 }
@@ -873,6 +926,15 @@ void GameScene::Input(Event& e)
 			Input_exit(e);
 		else
 		{
+			if (e.type == Event::KeyReleased && e.key.code == Keyboard::Tab)
+			{
+				puke_manager.isGunCharm = !puke_manager.isGunCharm;
+				if (puke_manager.isGunCharm)
+				{
+					clock_shoot.restart();
+					puke_manager.gunCharm.start();
+				}
+			}
 			if (e.type == Event::MouseButtonPressed && e.key.code == Mouse::Left)
 			{
 				mouseRect.isMousePressed = true;
@@ -890,7 +952,32 @@ void GameScene::Input(Event& e)
 				for (int j = 0; j < 4; j++)
 					puke_manager.puke.c[i][j].onClick(e);
 			player_turn_input(e);
+			if (puke_manager.num_desk > 0&&puke_manager.isGunCharm)
+			{
+				for (int i = puke_manager.num_desk - 1; i >= 0; i--)
+				{
+					int k = puke_manager.deskCard[i] / 4;
+					int l = puke_manager.deskCard[i] % 4;
+					if (puke_manager.puke.c[k][l].onShooted(app, e))
+					{
+						puke_manager.removeFromDesk(i);
+						break;
+					}
+				}
+			}
 		}
+	}
+	if(isShowOver)
+	{
+		if (bt_over_back.onClick(e))
+			isShowOver = false;
+		if (bt_over_restart.onClick(e))
+			Start();
+	}
+	else
+	{
+		if (bt_exit.onClick(e))
+			isExit = true;
 	}
 }
 
@@ -898,4 +985,5 @@ void GameScene::SceneClose()
 {
 	bgm.stop();
 	isRunning = false;
+	isOnSetting = false;
 }

@@ -10,6 +10,8 @@ public:
 	Sprite sprite;
 	Sound fx;
 	SoundBuffer sbfx;
+	Sound sound_shoot;
+	SoundBuffer sbf_shoot;
 	int dt_e;
 	bool isSeleted; //是否被选中
 	bool isOnTop;//最大的牌
@@ -17,6 +19,7 @@ public:
 	bool isOnDesk;//是否在出牌区
 	bool isDeleted;//是否已被出掉
 	void onClick(Event& e);
+	bool onShooted(RenderWindow* app, Event& e);
 };
 
 class Puke

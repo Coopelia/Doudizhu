@@ -67,3 +67,4 @@ extern class AI;
 extern class PukeManager;
 extern class MouseRectIn;
 extern class Mail;
+extern class GunCharm;
