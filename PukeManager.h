@@ -3,6 +3,7 @@
 #include"Player.h"
 #include"puke.h"
 #include"GunCharm.h"
+#include"RhythmCharm.h"
 
 class PukeManager
 {
@@ -21,12 +22,14 @@ public:
 	MyClock clock_deal;//发牌计时器，用于实现0.3S发一张牌的动画
 	DFSCard dfs_card;//计算手牌次数
 	GunCharm gunCharm;//射击
+	RhythmCharm rhythmCharm;//节奏
 	bool isGunCharm;
 	PukeManager();
 	void Start();//start before the first frame
 	void update();//每帧执行一次
 	void clearAll();//清空所有牌的状态
 	void deal();//发牌
+	void getCard_rhythm(int n);
 	void deal_dizhuCard();//发地主牌
 	void addToJudge(int i, int j);//将选中的牌添加到判断队列
 	void removeFromDesk(int i);//从桌面移除牌
@@ -36,5 +39,7 @@ public:
 	PukeType checkType(int* card, int num);//判断牌型（三带等）
 	void JudgeCard(Player& human);//判断是否合法
 private:
-	int temp[54];//辅助用的数组
+	int temp[54];
+	int dealTemp[54];
+	int puke_order[54];
 };

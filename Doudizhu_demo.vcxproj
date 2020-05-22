@@ -144,6 +144,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="puke.cpp" />
     <ClCompile Include="PukeManager.cpp" />
+    <ClCompile Include="RhythmCharm.cpp" />
     <ClCompile Include="scene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="puke.h" />
     <ClInclude Include="PukeManager.h" />
+    <ClInclude Include="RhythmCharm.h" />
     <ClInclude Include="scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

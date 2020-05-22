@@ -15,7 +15,11 @@ PukeManager::PukeManager()
 	for (int i = 0; i < 3; i++)
 		dizhuCard[i] = -1;
 	for (int i = 0; i < 54; i++)
-		temp[i] = i;
+	{
+		temp[i] = 0;
+		dealTemp[i] = i;
+		puke_order[i] = 0;
+	}
 	for (int i = 0; i < 20; i++)
 	{
 		deskCard[i] = -1;
@@ -63,7 +67,11 @@ void PukeManager::clearAll()
 	for (int i = 0; i < 3; i++)
 		dizhuCard[i] = -1;
 	for (int i = 0; i < 54; i++)
-		temp[i] = i;
+	{
+		temp[i] = 0;
+		dealTemp[i] = i;
+		puke_order[i] = 0;
+	}
 	for (int i = 0; i < 20; i++)
 	{
 		deskCard[i] = -1;
@@ -89,43 +97,81 @@ void PukeManager::clearAll()
 void PukeManager::deal()
 {
 	srand(time(0));
-	int k;
-	while (true)
+	if (!isRhythm)
 	{
-		k = rand() % 54;
-		if (temp[k] != -1)
-			break;
-	}
-	if ((*human).num_card < 17)
-	{
-		(*human).addCard(temp[k]);
-		temp[k] = -1;
-	}
+		if (human->num_card==17)
+		{
+			for (int i = 0; i < (*human).num_card; i++)
+				dealTemp[human->hand_card[i]] = -1;
+		}
+		int k;
+		while (true)
+		{
+			k = rand() % 54;
+			if (dealTemp[k] != -1)
+				break;
+		}
+		if ((*human).num_card < 17)
+		{
+			(*human).addCard(dealTemp[k]);
+			dealTemp[k] = -1;
+		}
 
-	while (true)
-	{
-		k = rand() % 54;
-		if (temp[k] != -1)
-			break;
-	}
-	if ((*ai_1).num_card < 17)
-	{
-		(*ai_1).addCard(temp[k]);
-		temp[k] = -1;
-	}
+		while (true)
+		{
+			k = rand() % 54;
+			if (dealTemp[k] != -1)
+				break;
+		}
+		if ((*ai_1).num_card < 17)
+		{
+			(*ai_1).addCard(dealTemp[k]);
+			dealTemp[k] = -1;
+		}
 
-	while (true)
-	{
-		k = rand() % 54;
-		if (temp[k] != -1)
-			break;
+		while (true)
+		{
+			k = rand() % 54;
+			if (dealTemp[k] != -1)
+				break;
+		}
+		if ((*ai_2).num_card < 17)
+		{
+			(*ai_2).addCard(dealTemp[k]);
+			dealTemp[k] = -1;
+		}
+		num_temp -= 3;
 	}
-	if ((*ai_2).num_card < 17)
+	else
 	{
-		(*ai_2).addCard(temp[k]);
-		temp[k] = -1;
+		int k, l;
+		rhythmCharm.update();
+		for (int i = 0; i < 54; i++)
+		{
+			if (rhythmCharm.puke_now[i] == 1)
+			{
+				k = puke_order[i] / 4;
+				l = puke_order[i] % 4;
+				puke.c[k][l].sprite.setPosition(rhythmCharm.puke_pos[i].x, rhythmCharm.puke_pos[i].y);
+				puke.c[k][l].sprite.setScale(0.6, 0.6);
+			}
+		}
 	}
-	num_temp -= 3;
+}
+
+void PukeManager::getCard_rhythm(int n)
+{
+	for (int i = 0; i < 54; i++)
+	{
+		if (rhythmCharm.puke_now[i] == 0)
+			continue;
+		if (rhythmCharm.puke_pos[i].y > 500 && rhythmCharm.puke_pos[i].y<600 && rhythmCharm.puke_pos[i].x==n * 100 + 440)
+		{
+			(*human).addCard(puke_order[i]);
+			rhythmCharm.puke_now[i] = 0;
+			rhythmCharm.speed += 0.5;
+		}
+	}
 }
 
 void PukeManager::deal_dizhuCard()
@@ -133,10 +179,10 @@ void PukeManager::deal_dizhuCard()
 	int num_d = 0;
 	for (int i = 0; i < 54; i++)
 	{
-		if (temp[i] != -1)
+		if (dealTemp[i] != -1)
 		{
-			dizhuCard[num_d++] = temp[i];
-			sDizhuCard[num_d - 1].sprite = puke.c[temp[i] / 4][temp[i] % 4].sprite;
+			dizhuCard[num_d++] = dealTemp[i];
+			sDizhuCard[num_d - 1].sprite = puke.c[dealTemp[i] / 4][dealTemp[i] % 4].sprite;
 		}
 	}
 	if ((*human).sid == DIZHU)
@@ -165,7 +211,20 @@ void PukeManager::deal_dizhuCard()
 void PukeManager::Start()
 {
 	//gunCharm.start();
+	rhythmCharm.start();
 	clearAll();
+	int m = 0, k;
+	while (m<54)
+	{
+		while (true)
+		{
+			k = rand() % 54;
+			if (temp[k] != -1)
+				break;
+		}
+		puke_order[m++] = k;
+		temp[k] = -1;
+	}
 }
 
 void PukeManager::update()
@@ -193,16 +252,19 @@ void PukeManager::update()
 
 	puke.c[(*human).hand_card[(*human).num_card - 1] / 4][(*human).hand_card[(*human).num_card - 1] % 4].isOnTop = true;
 
-	for (int i = 0; i < (*human).num_card; i++)
+	if (!isRhythm)
 	{
-		int k = (*human).hand_card[i] / 4;
-		int l = (*human).hand_card[i] % 4;
-		int posY;
-		if (puke.c[k][l].isSeleted)
-			posY = 470;
-		else
-			posY = 520;
-		puke.c[k][l].sprite.setPosition(puke_dt_x + i * puke_dt_e, posY);
+		for (int i = 0; i < (*human).num_card; i++)
+		{
+			int k = (*human).hand_card[i] / 4;
+			int l = (*human).hand_card[i] % 4;
+			int posY;
+			if (puke.c[k][l].isSeleted)
+				posY = 470;
+			else
+				posY = 520;
+			puke.c[k][l].sprite.setPosition(puke_dt_x + i * puke_dt_e, posY);
+		}
 	}
 
 	if (num_desk == 0)

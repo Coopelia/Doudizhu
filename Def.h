@@ -5,6 +5,7 @@
 #include<windows.h>
 #include<iostream>
 #include<vector>
+#include<sstream>
 #define WIDTH 1280
 #define HEIGHT 720
 using namespace sf;
@@ -54,6 +55,7 @@ enum DEC { NOT = 0, PASS, CHU };
 extern int vol_bgm, vol_sound;
 extern int jb;
 extern int px1, py1, px2, py2;
+extern bool isRhythm;
 extern class Card;
 extern class Puke;
 extern class Button;

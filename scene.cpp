@@ -76,6 +76,13 @@ StartScene::StartScene()
 	bt_sound_right.setTextrue("assets/image/game/大厅弹框/设置/right.png");
 	bt_bg_left.setTextrue("assets/image/game/大厅弹框/设置/left.png");
 	bt_bg_right.setTextrue("assets/image/game/大厅弹框/设置/right.png");
+	bt_rhythm_left.setTextrue("assets/image/game/大厅弹框/设置/left.png");
+	bt_rhythm_right.setTextrue("assets/image/game/大厅弹框/设置/right.png");
+	text_rhythm.setFont(font);
+	text_rhythm.setString(L"普通模式");
+	text_rhythm.setFillColor(Color::Red);
+	text_rhythm.setCharacterSize(20);
+	text_rhythm.setPosition(485, 426);
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Welcome.ogg");
 	bgm.setLoop(true);
 }
@@ -107,6 +114,8 @@ void StartScene::Initial(RenderWindow* app)
 	this->bt_exit_ok.app = app;
 	this->bt_exit_cancel.app = app;
 	this->bt_store_close.app = app;
+	this->bt_rhythm_left.app = app;
+	this->bt_rhythm_right.app = app;
 	this->mail.initial(app, 230, 180);
 }
 
@@ -145,22 +154,28 @@ void StartScene::draw_setting(RenderWindow* app)
 {
 	sBack_setting.setPosition(200, 60);
 	bt_setting_ok.setPosition(570, 450);
-	bt_bgm_left.setPosition(470, 277);
-	bt_bgm_right.setPosition(570, 277);
-	bt_sound_left.setPosition(470, 378);
-	bt_sound_right.setPosition(570, 378);
+	bt_bgm_left.setPosition(470, 255);
+	bt_bgm_right.setPosition(570, 255);
+	bt_sound_left.setPosition(470, 347);
+	bt_sound_right.setPosition(570, 347);
+	bt_rhythm_left.setPosition(460, 430);
+	bt_rhythm_right.setPosition(574, 430);
 	bt_bg_left.setPosition(660, 330);
 	bt_bg_right.setPosition(1023, 330);
 	text_bgm.setFont(font);
 	text_bgm.setString(std::to_string(vol_bgm));
 	text_bgm.setCharacterSize(36);
 	text_bgm.setFillColor(Color::Blue);
-	text_bgm.setPosition(500, 268);
+	text_bgm.setPosition(500, 242);
 	text_sound.setFont(font);
 	text_sound.setString(std::to_string(vol_sound));
 	text_sound.setCharacterSize(36);
 	text_sound.setFillColor(Color::Blue);
-	text_sound.setPosition(500, 368);
+	text_sound.setPosition(500, 337);
+	if (isRhythm)
+		text_rhythm.setString(L"节奏模式");
+	else
+		text_rhythm.setString(L"普通模式");
 	sBackMini.setPosition(690, 240);
 	(*app).draw(sBack_setting);
 	(*app).draw(sBackMini);
@@ -171,8 +186,11 @@ void StartScene::draw_setting(RenderWindow* app)
 	bt_sound_right.show();
 	bt_bg_left.show();
 	bt_bg_right.show();
+	bt_rhythm_left.show();
+	bt_rhythm_right.show();
 	(*app).draw(text_bgm);
 	(*app).draw(text_sound);
+	(*app).draw(text_rhythm);
 }
 
 void StartScene::draw_mail()
@@ -343,6 +361,10 @@ void StartScene::Input_setting(Event& e)
 		value_bg = value_bg % 3 + 1;
 	if (this->bt_bg_right.onClick(e))
 		value_bg = value_bg == 1 ? 3 : value_bg - 1;
+	if (this->bt_rhythm_left.onClick(e))
+		isRhythm = !isRhythm;
+	if (this->bt_rhythm_right.onClick(e))
+		isRhythm = !isRhythm;
 }
 
 void StartScene::Input_mail(Event& e)
@@ -406,6 +428,7 @@ GameScene::GameScene()
 	isGameover = false;
 	isPlayed_sd = false;
 	isShowOver = false;
+	isShooted = false;
 	puke_manager.human = &this->human;
 	puke_manager.ai_1 = &this->ai_1;
 	puke_manager.ai_2 = &this->ai_2;
@@ -420,6 +443,16 @@ GameScene::GameScene()
 	sOver.setPosition(0, 0);
 	tShoot.loadFromFile("assets/image/game/其他/shoot.png");
 	sShoot.setTexture(tShoot);
+	tDealBg.loadFromFile("assets/image/game/背景/deal_bg.png");
+	sDealBg.setTexture(tDealBg);
+	tF.loadFromFile("assets/image/game/其他/F.png");
+	sF.setTexture(tF);
+	tG.loadFromFile("assets/image/game/其他/G.png");
+	sG.setTexture(tG);
+	tH.loadFromFile("assets/image/game/其他/H.png");
+	sH.setTexture(tH);
+	tJ.loadFromFile("assets/image/game/其他/J.png");
+	sJ.setTexture(tJ);
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Normal.ogg");
 	text_jb.setFont(font);
 	text_jb.setCharacterSize(36);
@@ -457,6 +490,8 @@ void GameScene::Initial(RenderWindow* app)
 	this->bt_sound_right.app = app;
 	this->bt_bg_left.app = app;
 	this->bt_bg_right.app = app;
+	this->bt_rhythm_left.app = app;
+	this->bt_rhythm_right.app = app;
 }
 
 void GameScene::Start()
@@ -464,6 +499,7 @@ void GameScene::Start()
 	bgm.play();
 	score = 0;
 	elapsTime_shoot = 0;
+	totalTime_shoot = 4000;
 	isRunning = true;
 	isDealing = true;
 	isDealDizhu = false;
@@ -472,6 +508,7 @@ void GameScene::Start()
 	isGameover = false;
 	isPlayed_sd = false;
 	isShowOver = false;
+	isShooted = false;
 	puke_manager.Start();
 }
 
@@ -484,26 +521,33 @@ void GameScene::Update()
 	ai_2.update();
 	if (isDealing)
 	{
-		if (puke_manager.clock_deal.isRun == false)
+		if (!isRhythm)
 		{
-			puke_manager.clearAll();
-			puke_manager.clock_deal.start();
-		}
-		puke_manager.clock_deal.update();
-		if (puke_manager.num_temp > 3)
-		{
-			if (puke_manager.clock_deal.minTime >= 300)
+			if (puke_manager.clock_deal.isRun == false)
+				puke_manager.clock_deal.start();
+			puke_manager.clock_deal.update();
+			if (puke_manager.num_temp > 3)
 			{
-				puke_manager.deal();
-				puke_manager.clock_deal.restart();
+				if (puke_manager.clock_deal.minTime >= 300)
+				{
+					puke_manager.deal();
+					puke_manager.clock_deal.restart();
+				}
+			}
+			else
+			{
+				puke_manager.clock_deal.stop();
+				isDealing = false;
+				isDealDizhu = true;
+				human.isCallingDizhu = true;
 			}
 		}
 		else
 		{
-			puke_manager.clock_deal.stop();
-			isDealing = false;
-			isDealDizhu = true;
-			human.isCallingDizhu = true;
+			if (human.num_card == 17)
+				isRhythm = false;
+			else
+				puke_manager.deal();
 		}
 	}
 	if (isPlaying)
@@ -583,7 +627,7 @@ void GameScene::Update()
 	if (puke_manager.isGunCharm)
 	{
 		elapsTime_shoot += clock_shoot.restart().asMilliseconds();
-		if (elapsTime_shoot > 4000)
+		if (elapsTime_shoot > totalTime_shoot)
 		{
 			elapsTime_shoot = 0;
 			puke_manager.isGunCharm = false;
@@ -624,10 +668,6 @@ void GameScene::Draw()
 	ai_2.tNum_rest.setFillColor(Color::Yellow);
 	(*app).draw(puke_manager.puke.Back);
 	(*app).draw(ai_2.tNum_rest);
-	bt_exit.setPosition(1210, 12);
-	bt_setting.setPosition(1130, 10);
-	bt_setting.show();
-	bt_exit.show();
 	if (isDealDizhu)
 	{
 		human.sCall.setPosition(610, 430);
@@ -640,13 +680,39 @@ void GameScene::Draw()
 		(*app).draw(ai_1.sCall);
 		(*app).draw(ai_2.sCall);
 	}
-	//绘制玩家扑克牌
-	for (int i = 0; i < human.num_card; i++)
+	if (isRhythm && isDealing)
 	{
-		int k = human.hand_card[i] / 4;
-		int l = human.hand_card[i] % 4;
-		puke_manager.puke.c[k][l].sprite.setScale(0.7, 0.7);
-		(*app).draw(puke_manager.puke.c[k][l].sprite);
+		sDealBg.setPosition(0, 0);
+		(*app).draw(sDealBg);
+		sF.setPosition(440, 600);
+		sG.setPosition(540, 600);
+		sH.setPosition(640, 600);
+		sJ.setPosition(740, 600);
+		for (int i = 0; i < 54; i++)
+			(*app).draw(puke_manager.puke.c[i / 4][i % 4].sprite);
+		(*app).draw(sF);
+		(*app).draw(sG);
+		(*app).draw(sH);
+		(*app).draw(sJ);
+		for (int i = 0; i < human.num_card; i++)
+		{
+			int k = human.hand_card[i] / 4;
+			int l = human.hand_card[i] % 4;
+			puke_manager.puke.c[k][l].sprite.setPosition((i % 4) * 70 + 30, (i / 4) * 120 + 100);
+			puke_manager.puke.c[k][l].sprite.setScale(0.5, 0.5);
+			(*app).draw(puke_manager.puke.c[k][l].sprite);
+		}
+	}
+	//绘制玩家扑克牌
+	if (!isRhythm)
+	{
+		for (int i = 0; i < human.num_card; i++)
+		{
+			int k = human.hand_card[i] / 4;
+			int l = human.hand_card[i] % 4;
+			puke_manager.puke.c[k][l].sprite.setScale(0.7, 0.7);
+			(*app).draw(puke_manager.puke.c[k][l].sprite);
+		}
 	}
 	//绘制出牌区
 	for (int i = 0; i < puke_manager.num_desk; i++)
@@ -767,11 +833,15 @@ void GameScene::Draw()
 		Vector2i mpos = Mouse::getPosition(*app);
 		sShoot.setOrigin(25, 25);
 		sShoot.setPosition(mpos.x, mpos.y);
-		text_shoot.setString(std::to_string(4 - elapsTime_shoot / 1000) + "." + std::to_string(1000 - elapsTime_shoot % 1000));
+		text_shoot.setString(std::to_string((totalTime_shoot - elapsTime_shoot) / 1000) + "." + std::to_string(1000 - elapsTime_shoot % 1000));
 		text_shoot.setPosition(mpos.x + 30, mpos.y);
 		(*app).draw(sShoot);
 		(*app).draw(text_shoot);
 	}
+	bt_exit.setPosition(1210, 12);
+	bt_setting.setPosition(1130, 10);
+	bt_setting.show();
+	bt_exit.show();
 }
 
 void GameScene::player_turn_input(Event& e)
@@ -901,6 +971,44 @@ void GameScene::player_turn_input(Event& e)
 	}
 }
 
+void GameScene::input_rhythm(Event& e)
+{
+	if (e.type == Event::KeyPressed)
+	{
+		if (e.key.code == Keyboard::F)
+		{
+			sF.setColor(Color(255, 255, 255, 125));
+			puke_manager.getCard_rhythm(0);
+		}
+		if (e.key.code == Keyboard::G)
+		{
+			sG.setColor(Color(255, 255, 255, 125));
+			puke_manager.getCard_rhythm(1);
+		}
+		if (e.key.code == Keyboard::H)
+		{
+			sH.setColor(Color(255, 255, 255, 125));
+			puke_manager.getCard_rhythm(2);
+		}
+		if (e.key.code == Keyboard::J)
+		{
+			sJ.setColor(Color(255, 255, 255, 125));
+			puke_manager.getCard_rhythm(3);
+		}
+	}
+	if (e.type == Event::KeyReleased)
+	{
+		if (e.key.code == Keyboard::F)
+			sF.setColor(Color(255, 255, 255, 255));
+		if (e.key.code == Keyboard::G)
+			sG.setColor(Color(255, 255, 255, 255));
+		if (e.key.code == Keyboard::H)
+			sH.setColor(Color(255, 255, 255, 255));
+		if (e.key.code == Keyboard::J)
+			sJ.setColor(Color(255, 255, 255, 255));
+	}
+}
+
 void GameScene::Input_exit(Event& e)
 {
 	if (bt_exit_ok.onClick(e))
@@ -929,6 +1037,8 @@ void GameScene::Input(Event& e)
 			if (e.type == Event::KeyReleased && e.key.code == Keyboard::Tab)
 			{
 				puke_manager.isGunCharm = !puke_manager.isGunCharm;
+				if (!isShooted)
+					isShooted = true;
 				if (puke_manager.isGunCharm)
 				{
 					clock_shoot.restart();
@@ -966,6 +1076,8 @@ void GameScene::Input(Event& e)
 				}
 			}
 		}
+		if (isRhythm && isDealing)
+			input_rhythm(e);
 	}
 	if(isShowOver)
 	{

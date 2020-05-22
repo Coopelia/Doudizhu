@@ -11,6 +11,7 @@ Game::Game()
 	this->OnStartScene = true;
 	this->OnPlayScene = false;
 	this->isOvered = false;
+	this->isOnWel = true;
 	this->gameOver = 0;
 	(*app).setFramerateLimit(60);
 }
@@ -91,17 +92,37 @@ void Game::Draw()
 		game_scene.Draw();
 }
 
+void Game::show_Wel(int i)
+{
+	std::stringstream ss;
+	ss << "assets/image/wel/ddz-wel_" << i << ".png";
+	tWel.loadFromFile(ss.str());
+	sWel.setTexture(tWel);
+	sWel.setPosition(0, 0);
+	(*app).draw(sWel);
+}
+
 void Game::Run()
 {
+	int i = 1000;
 	while ((*app).isOpen())
 	{
 		Event e;
 		(*app).pollEvent(e);
 		if (e.type == Event::Closed)
 			(*app).close();
-		Input(e);
-		Update();
-		Draw();
+		if (isOnWel)
+		{
+			show_Wel(i++);
+			if (i == 1296)
+				isOnWel = false;
+		}
+		if (!isOnWel)
+		{
+			Input(e);
+			Update();
+			Draw();
+		}
 		(*app).display();
 	}
 }

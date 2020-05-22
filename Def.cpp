@@ -7,3 +7,4 @@ int px1 = 0;
 int py1 = 0;
 int px2 = 0;
 int py2 = 0;
+bool isRhythm = false;

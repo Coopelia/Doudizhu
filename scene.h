@@ -23,8 +23,8 @@ public:
 	bool isOnSetting;
 	Sprite sBack_setting, sBackMini;
 	Texture tBack_setting;
-	Button bt_setting_ok, bt_bgm_left, bt_bgm_right, bt_sound_left, bt_sound_right, bt_bg_left, bt_bg_right;
-	Text text_bgm, text_sound;
+	Button bt_setting_ok, bt_bgm_left, bt_bgm_right, bt_sound_left, bt_sound_right, bt_bg_left, bt_bg_right, bt_rhythm_left, bt_rhythm_right;
+	Text text_bgm, text_sound, text_rhythm;
 
 	bool isOnExit;
 	Sprite sBack_exit;
@@ -96,12 +96,13 @@ public:
 	PukeManager puke_manager;//扑克管理器
 	Player human;//玩家
 	AI ai_1, ai_2;//AI
-	Sprite sOver, sShoot;
-	Texture tOver[2], tShoot;
+	Sprite sOver, sShoot, sDealBg, sF, sG, sH, sJ;
+	Texture tOver[2], tShoot, tDealBg, tF, tG, tH, tJ;
 	Text text_score, text_jb, text_over, text_shoot;
 	Button bt_over_back, bt_over_restart;
 	int score;
 	int elapsTime_shoot;
+	int totalTime_shoot;
 	Music mu_over;
 	MyClock clock_showCall;//出牌倒计时
 	Clock clock_shoot;
@@ -111,12 +112,14 @@ public:
 	bool isPlaying;
 	bool isGameover;//有人手牌已全部打出，游戏结束
 	bool isShowOver;
+	bool isShooted;
 	GameScene();
 	void Initial(RenderWindow* app);
 	void Start();//场景运行前执行一次
 	void Update();//场景运行时每帧执行一次
 	void Draw();//绘制
 	void player_turn_input(Event& e);//玩家轮流出牌和叫地主
+	void input_rhythm(Event& e); //节奏模式输入
 	void Input(Event& e);//输入
 	void SceneClose();//场景关闭
 	void Input_exit(Event& e);
