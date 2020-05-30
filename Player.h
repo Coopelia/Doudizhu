@@ -4,7 +4,7 @@
 #include"MyClock.h"
 #include"DFSCard.h"
 
-class User
+class User//用户类
 {
 public:
 	RenderWindow* app;
@@ -33,7 +33,7 @@ private:
 	void show();//绘制
 };
 
-class Player:public User
+class Player:public User//玩家类
 {
 public:
 	Player();
@@ -45,7 +45,7 @@ public:
 	Texture tMeg;
 };
 
-class AI :public User
+class AI :public User//AI类
 {
 public:
 	MyClock clock_callDizhu, clock_chupai;

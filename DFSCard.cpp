@@ -1,6 +1,6 @@
 #include "DFSCard.h"
 
-DFSCard::DFSCard()
+DFSCard::DFSCard()//初始化变量
 {
 	n = 0;
 	ans = 20;
@@ -17,23 +17,23 @@ DFSCard::DFSCard()
 void DFSCard::add_to_dfs(int* c, int n)
 {
 	this->n = n;
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)//按照规则来给牌分类
 	{
 		int x;
-		if (c[i] / 4 >= 0 && c[i] / 4 <= 10)
+		if (c[i] / 4 >= 0 && c[i] / 4 <= 10)// 3-K
 			x = c[i] / 4 + 3;
-		else if (c[i] / 4 == 11)
+		else if (c[i] / 4 == 11)// A
 			x = 1;
-		else if (c[i] / 4 == 12)
+		else if (c[i] / 4 == 12)// 2
 			x = 2;
-		else if (c[i] / 4 == 13)
+		else if (c[i] / 4 == 13)// 王
 			x = 0;
-		if (x == 1)
+		if (x == 1)//如果是A，编号13
 			x = 13;
-		else
+		else //否则编号为x-1
 			if (x)
 				x--;
-		this->a[x]++;
+		this->a[x]++;//加入到对应编号项
 	}
 }
 
@@ -41,42 +41,42 @@ int DFSCard::work(int* x)
 {
 	int y[10], num = 0;
 	memset(y, 0, sizeof(y));
-	for (int i = 0; i <= 13; i++)
+	for (int i = 0; i <= 13; i++)//计算单牌、对牌、三带、四带的个数
 		y[x[i]]++;
-	while (y[4] >= 1 && y[2] >= 2)
+	while (y[4] >= 1 && y[2] >= 2)//四带一对
 	{
 		num++;
 		y[4]--;
 		y[2] -= 2;
 	}
-	while (y[4] >= 1 && y[1] >= 2) 
+	while (y[4] >= 1 && y[1] >= 2) //四带二单
 	{
 		num++;
 		y[4]--;
 		y[1] -= 2;
 	}
-	while (y[4] >= 1 && y[2] >= 1) 
+	while (y[4] >= 1 && y[2] >= 1) //四带二对
 	{
 		num++;
 		y[4]--;
 		y[2]--;
 	}
-	while (y[3] >= 1 && y[2] >= 1) 
+	while (y[3] >= 1 && y[2] >= 1) //三带一对
 	{
 		num++;
 		y[3]--;
 		y[2]--;
 	}
-	while (y[3] >= 1 && y[1] >= 1)
+	while (y[3] >= 1 && y[1] >= 1)//三带单
 	{
 		num++;
 		y[3]--;
 		y[1]--;
 	}
-	return num + y[1] + y[2] + y[3] + y[4];
+	return num + y[1] + y[2] + y[3] + y[4];//返回本次计算的手数
 }
 
-void DFSCard::dfs(int* x, int step)
+void DFSCard::dfs(int* x, int step)//深搜+剪枝，如果得出的手数比上次的多，返回，否则接着计算
 {
 	int yu = work(x);
 	ans = std::min(ans, step + yu);
@@ -171,7 +171,7 @@ void DFSCard::dfs(int* x, int step)
 	}
 }
 
-void DFSCard::getFirst()
+void DFSCard::getFirst()//获取第一手牌
 {
 	bool flag1 = false, flag2 = false;
 	for (int i = 0; i <= 13; i++)
@@ -208,7 +208,7 @@ void DFSCard::getFirst()
 	}
 }
 
-void DFSCard::clear()
+void DFSCard::clear()//清空
 {
 	for (int i = 0; i <= 13; i++)
 	{

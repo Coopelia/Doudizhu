@@ -25,16 +25,16 @@ typedef struct Speed
 class GunCharm
 {
 public:
-	GunCharm();
-	void start();
-	void updata();
-	void clear();
-	Pos puke_pos[20];
-	Speed speed_mov[20];
-	Speed acc[20];
-	float speed_sca[20];
-	float puke_scale[20];
-	int num;
-	Clock clock_mov, clock_spe;
-	float elapsTime_mov, elapsTime_spe;
+	GunCharm();//构造函数
+	void start();//开始执行一次
+	void updata();//开始后每帧执行一次
+	void clear();//清空
+	Pos puke_pos[20];//扑克牌坐标
+	Speed speed_mov[20];//扑克牌速度
+	Speed acc[20];//扑克牌加速度
+	float speed_sca[20];//扑克牌缩放速度
+	float puke_scale[20];//扑克牌缩放比例
+	int num;//扑克牌数量
+	Clock clock_mov, clock_spe;//计时器
+	float elapsTime_mov, elapsTime_spe;//时间间隔
 };

@@ -229,6 +229,8 @@ void PukeManager::Start()
 
 void PukeManager::update()
 {
+	for (int i = num_desk; i < 20; i++)
+		deskCard[i] = -1;
 	puke_dt_e = 55 - (*human).num_card;
 	puke_dt_x = 620 - (*human).num_card * puke_dt_e / 2;
 

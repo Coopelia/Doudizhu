@@ -107,6 +107,7 @@ void Game::Run()
 	int i = 1000;
 	while ((*app).isOpen())
 	{
+		app->clear();
 		Event e;
 		(*app).pollEvent(e);
 		if (e.type == Event::Closed)

@@ -454,6 +454,8 @@ GameScene::GameScene()
 	tJ.loadFromFile("assets/image/game/其他/J.png");
 	sJ.setTexture(tJ);
 	bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Normal.ogg");
+	sb_get.loadFromFile("assets/Sound/Special/CardRotate.ogg");
+	sound_get.setBuffer(sb_get);
 	text_jb.setFont(font);
 	text_jb.setCharacterSize(36);
 	text_jb.setFillColor(Color::Yellow);
@@ -469,6 +471,7 @@ GameScene::GameScene()
 	text_shoot.setCharacterSize(36);
 	text_shoot.setFillColor(Color::Blue);
 	bgm.setLoop(true);
+	sound_get.setLoop(false);
 }
 
 void GameScene::Initial(RenderWindow* app)
@@ -496,7 +499,6 @@ void GameScene::Initial(RenderWindow* app)
 
 void GameScene::Start()
 {
-	bgm.play();
 	score = 0;
 	elapsTime_shoot = 0;
 	totalTime_shoot = 4000;
@@ -510,11 +512,15 @@ void GameScene::Start()
 	isShowOver = false;
 	isShooted = false;
 	puke_manager.Start();
+	if (isRhythm)
+		bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Exciting.ogg");
+	bgm.play();
 }
 
 void GameScene::Update()
 {
 	this->bgm.setVolume(vol_bgm);
+	sound_get.setVolume(vol_sound * 0.5);
 	puke_manager.update();
 	human.update();
 	ai_1.update();
@@ -539,13 +545,24 @@ void GameScene::Update()
 				puke_manager.clock_deal.stop();
 				isDealing = false;
 				isDealDizhu = true;
-				human.isCallingDizhu = true;
+				srand(time(0));
+				int r = rand() % 3;
+				if (r == 0)
+					human.isCallingDizhu = true;
+				else if (r == 1)
+					ai_1.isCallingDizhu = true;
+				else
+					ai_2.isCallingDizhu = true;
 			}
 		}
 		else
 		{
 			if (human.num_card == 17)
+			{
 				isRhythm = false;
+				bgm.openFromFile("assets/Sound/MusicEx/MusicEx_Normal.ogg");
+				bgm.play();
+			}
 			else
 				puke_manager.deal();
 		}
@@ -605,7 +622,7 @@ void GameScene::Update()
 				}
 			}
 		}
-		if (!isPlayed_sd)
+		if (!isPlayed_sd)//如果是第一次执行以下代码
 		{
 			text_over.setString(std::to_string(score * 100));
 			if (human.isWin)
@@ -854,23 +871,45 @@ void GameScene::player_turn_input(Event& e)
 		if (human.s_call != -1)
 		{
 			score += human.s_call * 10;
-			ai_1.isCallingDizhu = true;
+			if (human.s_call == 3)
+			{
+				ai_1.s_call = 0;
+				ai_2.s_call = 0;
+			}
+			else 
+				ai_1.isCallingDizhu = true;
 		}
 		if (ai_1.isCallingDizhu && ai_1.s_call == -1)
 			ai_1.callDizhu();
 		if (ai_1.s_call != -1)
 		{
 			score += ai_1.s_call * 10;
-			ai_2.isCallingDizhu = true;
+			if (ai_1.s_call == 3)
+			{
+				human.s_call = 0;
+				ai_2.s_call = 0;
+			}
+			else
+				ai_2.isCallingDizhu = true;
 		}
 		if (ai_2.isCallingDizhu && ai_2.s_call == -1)
 			ai_2.callDizhu();
 		if (ai_2.s_call != -1)
 		{
 			score += ai_2.s_call * 10;
+			if (ai_2.s_call == 3)
+			{
+				human.s_call = 0;
+				ai_1.s_call = 0;
+			}
+			else
+				human.isCallingDizhu = true;
 		}
 		if (human.s_call != -1 && ai_1.s_call != -1 && ai_2.s_call != -1)
 		{
+			human.isCallingDizhu = false;
+			ai_1.isCallingDizhu = false;
+			ai_2.isCallingDizhu = false;
 			if (human.s_call == 0 && ai_1.s_call == 0 && ai_2.s_call == 0)
 			{
 				isDealing = true;
@@ -975,6 +1014,7 @@ void GameScene::input_rhythm(Event& e)
 {
 	if (e.type == Event::KeyPressed)
 	{
+		sound_get.play();
 		if (e.key.code == Keyboard::F)
 		{
 			sF.setColor(Color(255, 255, 255, 125));
@@ -1045,24 +1085,27 @@ void GameScene::Input(Event& e)
 					puke_manager.gunCharm.start();
 				}
 			}
-			if (e.type == Event::MouseButtonPressed && e.key.code == Mouse::Left)
+			if (!isRhythm)
 			{
-				mouseRect.isMousePressed = true;
-				px1 = Mouse::getPosition(*app).x;
-				py1 = Mouse::getPosition(*app).y;
+				if (e.type == Event::MouseButtonPressed && e.key.code == Mouse::Left)
+				{
+					mouseRect.isMousePressed = true;
+					px1 = Mouse::getPosition(*app).x;
+					py1 = Mouse::getPosition(*app).y;
+				}
+				if (mouseRect.isMousePressed)
+				{
+					px2 = Mouse::getPosition(*app).x;
+					py2 = Mouse::getPosition(*app).y;
+				}
+				if (e.type == Event::MouseButtonReleased && e.key.code == Mouse::Left)
+					mouseRect.isMousePressed = false;
+				for (int i = 0; i < 14; i++)
+					for (int j = 0; j < 4; j++)
+						puke_manager.puke.c[i][j].onClick(e);
 			}
-			if (mouseRect.isMousePressed)
-			{
-				px2 = Mouse::getPosition(*app).x;
-				py2 = Mouse::getPosition(*app).y;
-			}
-			if (e.type == Event::MouseButtonReleased && e.key.code == Mouse::Left)
-				mouseRect.isMousePressed = false;
-			for (int i = 0; i < 14; i++)
-				for (int j = 0; j < 4; j++)
-					puke_manager.puke.c[i][j].onClick(e);
 			player_turn_input(e);
-			if (puke_manager.num_desk > 0&&puke_manager.isGunCharm)
+			if (puke_manager.num_desk > 0 && puke_manager.isGunCharm)
 			{
 				for (int i = puke_manager.num_desk - 1; i >= 0; i--)
 				{

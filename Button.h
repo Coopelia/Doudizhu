@@ -12,15 +12,15 @@ class Button
 public:
 	Button();
 	bool PreBehRel;   //防止鼠标在按钮外面按住然后移到按钮上松开触发点击事件
-	void setTextrue(String s);
-	void setPosition(int x, int y);
-	void setScale(float x, float y);
-	void show();
-	bool onClick(Event& e);
-	Sprite s;
-	Sound fx;
-	SoundBuffer sbfx;
+	void setTextrue(String s);//设置纹理
+	void setPosition(int x, int y);//设置位置
+	void setScale(float x, float y);//设置大小
+	void show();//绘制
+	bool onClick(Event& e);//点击响应函数
+	Sprite s;//精灵对象
+	Sound fx;//点击音效
+	SoundBuffer sbfx;//点击音效buffer
 private:
-	Texture t;
-	RenderWindow* app;
+	Texture t;//纹理贴图
+	RenderWindow* app;//绑定的活动窗口
 };

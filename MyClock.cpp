@@ -1,6 +1,6 @@
 #include"MyClock.h"
 
-MyClock::MyClock()
+MyClock::MyClock() //初始化字段
 {
 	hour = 0;
 	minute = 0;
@@ -12,7 +12,7 @@ MyClock::MyClock()
 	this->isRun = false;
 }
 
-void MyClock::stop()
+void MyClock::stop()//停止就回到初始状态
 {
 	hour = 0;
 	minute = 0;
@@ -24,7 +24,7 @@ void MyClock::stop()
 	this->isRun = false;
 }
 
-void MyClock::start()
+void MyClock::start()//开始
 {
 	this->beginTime = clock();
 	this->isRun = true;
@@ -41,20 +41,20 @@ void MyClock::update()
 	this->endTime = clock();
 	if (this->isRun)
 	{
-		this->minTime += (this->endTime - this->beginTime);
+		this->minTime += (this->endTime - this->beginTime);//结束时间-开始时间
 		this->elapsedTime += (this->endTime - this->beginTime);
-		this->second = elapsedTime / 1000;
-		if (this->second == 60)
+		this->second = elapsedTime / 1000;//换算成秒
+		if (this->second == 60)//换算成分
 		{
 			this->beginTime = this->endTime;
 			this->elapsedTime = 0;
 			this->minute++;
 		}
-		if (this->minute == 60)
+		if (this->minute == 60)//换算成时
 		{
 			this->minute = 0;
 			this->hour++;
 		}
 	}
-	this->beginTime = this->endTime;
+	this->beginTime = this->endTime;//下一帧开始时间就是这一帧结束时间
 }

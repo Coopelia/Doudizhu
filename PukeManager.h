@@ -38,7 +38,7 @@ public:
 	bool findWithType(PukeType type, int low, int* source_card, int* result_card);//从source_card中找最合适的type类型的卡,主体部分最小为low
 	PukeType checkType(int* card, int num);//判断牌型（三带等）
 	void JudgeCard(Player& human);//判断是否合法
-private:
+private://特殊模式下辅助数组
 	int temp[54];
 	int dealTemp[54];
 	int puke_order[54];

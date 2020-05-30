@@ -11,26 +11,26 @@ class StartScene
 public:
 	Music bgm;
 	Button bt_setting, bt_exit;//设置按钮，退出
-	Sprite sBackground;
-	Sprite sBack_menu;
+	Sprite sBackground; //背景
+	Sprite sBack_menu;//菜单背景
 	Texture tBackground1, tBackground2, tBackground3;
 	Texture tBack_menu;
-	Font font;
+	Font font;//字体
 	bool isRunning;//是否在当前场景
 	bool isExit;//是否离开当前场景
 	StartScene();
-
+	//设置菜单
 	bool isOnSetting;
 	Sprite sBack_setting, sBackMini;
 	Texture tBack_setting;
 	Button bt_setting_ok, bt_bgm_left, bt_bgm_right, bt_sound_left, bt_sound_right, bt_bg_left, bt_bg_right, bt_rhythm_left, bt_rhythm_right;
 	Text text_bgm, text_sound, text_rhythm;
-
+	//退出对话框
 	bool isOnExit;
 	Sprite sBack_exit;
 	Texture tBack_exit;
 	Button bt_exit_ok, bt_exit_cancel;
-
+	//对应的输入和绘制函数
 	void Input_setting(Event& e);
 	void draw_setting(RenderWindow* app);
 	void draw_exit(RenderWindow* app);
@@ -39,57 +39,57 @@ private:
 	Sprite sMeinv, sBackUser, sUserHead, sJf, sRankList;
 	Texture tMeinv, tBackUser, tUserHead, tJf, tRankList;
 	Text text_jb;
-
+	//邮件菜单
 	bool isOnMail;
 	int num_mail;
 	Sprite sBack_mail, sRedPoint;
 	Texture tBack_mail, tRedPoint;
 	Button bt_mail_close;
 	Mail mail;
-
+	//玩法菜单
 	bool isOnWanfa;
 	Sprite sBack_wanfa;
 	Texture tBack_wanfa;
 	Button bt_wanfa_ok;
-
+	//反馈菜单
 	bool isOnFankui;
 	Sprite sBack_fankui;
 	Texture tBack_fankui;
 	Button bt_fankui_close;
-
+	//战绩菜单
 	bool isOnZhanji;
 	Sprite sBack_zhanji;
 	Texture tBack_zhanji;
 	Button bt_zhanji_close;
-
+	//商店菜单
 	bool isOnStore;
 	Sprite sBack_store;
 	Texture tBack_store;
 	Button bt_store_close;
 
-	RenderWindow* app;
-	int value_bg;
-	void Initial(RenderWindow* app);
-	void Start();
-	void Update();
-	void Input(Event& e);
-	void Input_scene(Event& e);
-	void Input_mail(Event& e);
-	void Input_wanfa(Event& e);
-	void Input_fankui(Event& e);
-	void Input_zhanji(Event& e);
-	void Input_store(Event& e);
-	void Input_exit(Event& e);
-	void draw_mail();
-	void draw_wanfa();
-	void draw_fankui();
-	void draw_zhanji();
-	void draw_store();
-	void Draw();
-	void SceneClose();
+	RenderWindow* app;//活动窗口
+	int value_bg;//背景音乐音量
+	void Initial(RenderWindow* app);//绑定活动窗口
+	void Start();//载入场景时执行一次
+	void Update();//载入场景后没帧执行一次
+	void Input(Event& e);//输入主函数
+	void Input_scene(Event& e);//在场景输入
+	void Input_mail(Event& e);//在邮件输入
+	void Input_wanfa(Event& e);//在玩法输入
+	void Input_fankui(Event& e);//在反馈输入
+	void Input_zhanji(Event& e);//在战绩输入
+	void Input_store(Event& e);//在商店输入
+	void Input_exit(Event& e);//在退出对话框输入
+	void draw_mail();//绘制邮件
+	void draw_wanfa();//绘制玩法
+	void draw_fankui();//绘制反馈
+	void draw_zhanji();//绘制战绩
+	void draw_store();//绘制商店
+	void Draw();//绘制主函数
+	void SceneClose();//关闭场景
 };
 
-class GameScene: public StartScene
+class GameScene: public StartScene //派生出游戏场景类
 {
 	friend class Game;
 public:
@@ -100,6 +100,8 @@ public:
 	Texture tOver[2], tShoot, tDealBg, tF, tG, tH, tJ;
 	Text text_score, text_jb, text_over, text_shoot;
 	Button bt_over_back, bt_over_restart;
+	Sound sound_get;
+	SoundBuffer sb_get;
 	int score;
 	int elapsTime_shoot;
 	int totalTime_shoot;
@@ -122,7 +124,7 @@ public:
 	void input_rhythm(Event& e); //节奏模式输入
 	void Input(Event& e);//输入
 	void SceneClose();//场景关闭
-	void Input_exit(Event& e);
+	void Input_exit(Event& e);//退出界面输入
 private:
 	RenderWindow* app;
 };
