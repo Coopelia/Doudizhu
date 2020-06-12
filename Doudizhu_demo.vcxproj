@@ -129,8 +129,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AnimatedSprite.cpp" />
-    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Def.cpp" />
     <ClCompile Include="DFSCard.cpp" />
@@ -148,8 +146,6 @@
     <ClCompile Include="scene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnimatedSprite.hpp" />
-    <ClInclude Include="Animation.hpp" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Def.h" />
     <ClInclude Include="DFSCard.h" />

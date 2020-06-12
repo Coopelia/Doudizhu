@@ -34,10 +34,10 @@ public:
 	void addToJudge(int i, int j);//将选中的牌添加到判断队列
 	void removeFromDesk(int i);//从桌面移除牌
 	void sort_seleted();//对判断队列排序
-	void autoSeleteCard(AI* ai);//AI自动选牌
+	void autoSeleteCard(AI* ai, PukeType& type);//AI自动选牌
 	bool findWithType(PukeType type, int low, int* source_card, int* result_card);//从source_card中找最合适的type类型的卡,主体部分最小为low
 	PukeType checkType(int* card, int num);//判断牌型（三带等）
-	void JudgeCard(Player& human);//判断是否合法
+	void JudgeCard(Player& human,PukeType& type);//判断是否合法
 private://特殊模式下辅助数组
 	int temp[54];
 	int dealTemp[54];

@@ -112,6 +112,8 @@ void Game::Run()
 		(*app).pollEvent(e);
 		if (e.type == Event::Closed)
 			(*app).close();
+		if (e.type == Event::KeyPressed && e.key.code == Keyboard::Space)
+			isOnWel = false;
 		if (isOnWel)
 		{
 			show_Wel(i++);

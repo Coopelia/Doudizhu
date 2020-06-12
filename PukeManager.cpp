@@ -966,7 +966,7 @@ bool PukeManager::findWithType(PukeType type, int low, int* source_card, int* re
 	return false;
 }
 
-void PukeManager::autoSeleteCard(AI* ai)
+void PukeManager::autoSeleteCard(AI* ai, PukeType& type)
 {
 	(*ai).dec = NOT;
 	srand(time(0));
@@ -984,7 +984,7 @@ void PukeManager::autoSeleteCard(AI* ai)
 		dfs_card.dfs(dfs_card.a, 0);
 		dfs_card.getFirst();
 		int num_t = dfs_card.ans;
-		if (num_desk == 0)//控手主动出牌（主动时暂不支持飞机带翅膀）
+		if (num_desk == 0)//控手主动出牌
 		{
 			for (int i = 0; i < 14; i++)
 			{
@@ -1148,11 +1148,13 @@ void PukeManager::autoSeleteCard(AI* ai)
 				num_seleted = 0;
 				(*ai).isMyTime = false;
 				(*ai).dec = CHU;
+				type = checkType(deskCard, num_desk);
 			}
 			else
 			{
 				(*ai).isMyTime = false;
 				(*ai).dec = PASS;
+				type = illegal;
 			}
 		}
 		(*ai).clock_chupai.stop();
@@ -1419,7 +1421,7 @@ PukeType PukeManager::checkType(int* card, int num)
 	}
 }
 
-void PukeManager::JudgeCard(Player& human)
+void PukeManager::JudgeCard(Player& human, PukeType& type)
 {
 	bool isOk = false;
 	sort_seleted();
@@ -1494,6 +1496,7 @@ void PukeManager::JudgeCard(Player& human)
 		num_seleted = 0;
 		human.isMyTime = false;
 		human.dec = CHU;
+		type = seleted_type;
 	}
 	else
 	{
@@ -1504,5 +1507,6 @@ void PukeManager::JudgeCard(Player& human)
 		}
 		num_seleted = 0;
 		human.dec = NOT;
+		type = illegal;
 	}
 }

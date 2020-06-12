@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="AI">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Position X="6.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAAAAAAAAAIAAAAAQAAAAAIQAABQAAAAAAAAA=</HashCode>
       <FileName>Player.h</FileName>
@@ -13,62 +13,62 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Button">
-    <Position X="14.25" Y="13.75" Width="1.5" />
+    <Position X="6" Y="12" Width="8.75" />
     <TypeIdentifier>
       <HashCode>QEAAAAAAAAAAAAAAAAACAAACAAAAAgACBKQAAQAAEAA=</HashCode>
       <FileName>Button.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Card">
-    <Position X="23.25" Y="0.5" Width="1.5" />
+    <Position X="6.25" Y="21.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gABAAAAACAAAAAAAEAACAAQAABAgAgABAGAACAAAEAA=</HashCode>
       <FileName>puke.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DFSCard">
-    <Position X="8.5" Y="0.5" Width="1.5" />
+    <Position X="11.75" Y="17" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAACAIEAAACAEAAAEABgAAAAAAAAAhEAAAAAAAAAA=</HashCode>
       <FileName>DFSCard.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Game">
-    <Position X="5.75" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAgAAAAAQAAgAABAAAAAAQkAiAAQAAACIEAAACAII=</HashCode>
       <FileName>game.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="game_scene" />
       <Field Name="start_scene" />
+      <Field Name="game_scene" />
     </ShowAsAssociation>
   </Class>
   <Class Name="GameScene">
-    <Position X="0.5" Y="6.75" Width="1.5" />
+    <Position X="3.5" Y="15.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BQWAAACAACAwsqQAMQwIQEQCEIBBqAAEICQAgBgABho=</HashCode>
+      <HashCode>BQWAAACAQCAwsqQAMQwISEQCEIBBqAAEICQAgBgABho=</HashCode>
       <FileName>scene.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="puke_manager" />
+      <Field Name="human" />
       <Field Name="ai_1" />
       <Field Name="ai_2" />
       <Field Name="bt_over_back" />
       <Field Name="bt_over_restart" />
       <Field Name="clock_showCall" />
-      <Field Name="human" />
-      <Field Name="puke_manager" />
     </ShowAsAssociation>
   </Class>
   <Class Name="GunCharm">
-    <Position X="8.25" Y="9" Width="1.5" />
+    <Position X="9.25" Y="24.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EEAAQCACAQAAAAAgAAAgBAAAAAAAEAQAEAAAAAAEgAA=</HashCode>
       <FileName>GunCharm.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Mail">
-    <Position X="17.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAACAAAAAAAAAAAAAAQCUBAAEAAAABCAAyQAAAAA=</HashCode>
       <FileName>Mail.h</FileName>
@@ -77,151 +77,102 @@
       <Field Name="bt_ok" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="MouseRectIn">
-    <Position X="8.5" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAI=</HashCode>
-      <FileName>MouseRectIn.h</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="MyClock">
-    <Position X="11" Y="5.75" Width="1.5" />
+    <Position X="6" Y="17" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AABEABAAAQAAAAAgAgAAACBAAAAgAAAAAAAiAACEAAA=</HashCode>
       <FileName>MyClock.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Player">
-    <Position X="3.25" Y="1.75" Width="1.5" />
+    <Position X="8.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAQCAAAAAAgQAEAgAAQBABAAAAQAAAAA=</HashCode>
       <FileName>Player.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="bt_callNo" />
-      <Field Name="bt_callOne" />
-      <Field Name="bt_callThree" />
-      <Field Name="bt_callTwo" />
       <Field Name="bt_chupai" />
       <Field Name="bt_pass" />
+      <Field Name="bt_callThree" />
+      <Field Name="bt_callTwo" />
+      <Field Name="bt_callOne" />
+      <Field Name="bt_callNo" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Puke">
-    <Position X="11" Y="0.5" Width="1.5" />
+    <Position X="14.25" Y="17.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QQAAAAAAAABAAACAAAAAAABCBAAAAACAAAQAAAAAAAA=</HashCode>
+      <HashCode>AQAAAAAAAABAAAAAAAAAAABCBAAAAACAAAQAAAAAAAA=</HashCode>
       <FileName>puke.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PukeManager">
-    <Position X="14.25" Y="0.5" Width="1.5" />
+    <Position X="9.25" Y="16.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>hDAUgAASQGAAAAAAgAAAABAAAAAAEjmgAQAIAhEEBko=</HashCode>
       <FileName>PukeManager.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="sDizhuCard" />
+      <Field Name="human" />
       <Field Name="ai_1" />
       <Field Name="ai_2" />
+      <Field Name="puke" />
       <Field Name="clock_deal" />
       <Field Name="dfs_card" />
       <Field Name="gunCharm" />
-      <Field Name="human" />
-      <Field Name="puke" />
       <Field Name="rhythmCharm" />
-      <Field Name="sDizhuCard" />
     </ShowAsAssociation>
   </Class>
   <Class Name="RhythmCharm">
-    <Position X="14.25" Y="10" Width="1.5" />
+    <Position X="12.25" Y="22" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAACgAAAgAAAAAAAAAQAAAAAAAAAEgAA=</HashCode>
       <FileName>RhythmCharm.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StartScene">
-    <Position X="4.5" Y="6.75" Width="1.5" />
+    <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>1A4IICgEQGCDp2LkxBkQKBUMFCHQ84ARMOgRoDMjFAE=</HashCode>
       <FileName>scene.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="mail" />
-      <Field Name="bt_bg_left" />
-      <Field Name="bt_bg_right" />
+      <Field Name="bt_setting" />
+      <Field Name="bt_exit" />
+      <Field Name="bt_setting_ok" />
       <Field Name="bt_bgm_left" />
       <Field Name="bt_bgm_right" />
-      <Field Name="bt_creat" />
-      <Field Name="bt_Enter" />
-      <Field Name="bt_exit" />
-      <Field Name="bt_exit_cancel" />
-      <Field Name="bt_exit_ok" />
-      <Field Name="bt_fankui" />
-      <Field Name="bt_fankui_close" />
-      <Field Name="bt_join" />
-      <Field Name="bt_mail" />
-      <Field Name="bt_mail_close" />
-      <Field Name="bt_rhythm_left" />
-      <Field Name="bt_rhythm_right" />
-      <Field Name="bt_setting" />
-      <Field Name="bt_setting_ok" />
       <Field Name="bt_sound_left" />
       <Field Name="bt_sound_right" />
+      <Field Name="bt_bg_left" />
+      <Field Name="bt_bg_right" />
+      <Field Name="bt_rhythm_left" />
+      <Field Name="bt_rhythm_right" />
+      <Field Name="bt_exit_ok" />
+      <Field Name="bt_exit_cancel" />
+      <Field Name="bt_Enter" />
+      <Field Name="bt_join" />
+      <Field Name="bt_creat" />
+      <Field Name="bt_fankui" />
       <Field Name="bt_store" />
-      <Field Name="bt_store_close" />
       <Field Name="bt_wanfa" />
-      <Field Name="bt_wanfa_ok" />
+      <Field Name="bt_mail" />
       <Field Name="bt_zhanji" />
+      <Field Name="bt_mail_close" />
+      <Field Name="mail" />
+      <Field Name="bt_wanfa_ok" />
+      <Field Name="bt_fankui_close" />
       <Field Name="bt_zhanji_close" />
+      <Field Name="bt_store_close" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="User" Collapsed="true">
-    <Position X="1.75" Y="0.5" Width="1.5" />
+  <Class Name="User">
+    <Position X="7.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAIBAQgAAAIAQBQgEAAAsIQCFAAgAgQABCAhATQEADA=</HashCode>
       <FileName>Player.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="Pos">
-    <Position X="17.5" Y="7.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAABgAAAAAAA=</HashCode>
-      <FileName>GunCharm.h</FileName>
-    </TypeIdentifier>
-  </Struct>
-  <Struct Name="Scale">
-    <Position X="20.5" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
-      <FileName>GunCharm.h</FileName>
-    </TypeIdentifier>
-  </Struct>
-  <Struct Name="Speed">
-    <Position X="17.5" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAABgAAAAAAA=</HashCode>
-      <FileName>GunCharm.h</FileName>
-    </TypeIdentifier>
-  </Struct>
-  <Enum Name="PukeType">
-    <Position X="20.5" Y="5.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAghAAAIUJsRAAAAAICAAACICACCCDEEAAAABAQgAAA=</HashCode>
-      <FileName>Def.h</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="SF">
-    <Position X="20.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAABAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
-      <FileName>Def.h</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="DEC">
-    <Position X="23.25" Y="5.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAACBAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Def.h</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

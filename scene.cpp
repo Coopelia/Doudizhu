@@ -870,7 +870,6 @@ void GameScene::player_turn_input(Event& e)
 			human.callDizhu(e);
 		if (human.s_call != -1)
 		{
-			score += human.s_call * 10;
 			if (human.s_call == 3)
 			{
 				ai_1.s_call = 0;
@@ -883,7 +882,6 @@ void GameScene::player_turn_input(Event& e)
 			ai_1.callDizhu();
 		if (ai_1.s_call != -1)
 		{
-			score += ai_1.s_call * 10;
 			if (ai_1.s_call == 3)
 			{
 				human.s_call = 0;
@@ -896,7 +894,6 @@ void GameScene::player_turn_input(Event& e)
 			ai_2.callDizhu();
 		if (ai_2.s_call != -1)
 		{
-			score += ai_2.s_call * 10;
 			if (ai_2.s_call == 3)
 			{
 				human.s_call = 0;
@@ -917,9 +914,11 @@ void GameScene::player_turn_input(Event& e)
 				human.s_call = -1;
 				ai_1.s_call = -1;
 				ai_2.s_call = -1;
+				score = 0;
 			}
 			else
 			{
+				score = (human.s_call + ai_1.s_call + ai_2.s_call) * 10;
 				if (human.s_call >= ai_1.s_call && human.s_call >= ai_2.s_call)
 				{
 					human.sid = DIZHU;
@@ -980,7 +979,12 @@ void GameScene::player_turn_input(Event& e)
 						}
 					}
 				}
-				puke_manager.JudgeCard(human);
+				PukeType type = illegal;
+				puke_manager.JudgeCard(human, type);
+				if (type == rocket)
+					score *= 4;
+				else if (type == bomb)
+					score *= 2;
 				if (human.dec != NOT)
 				{
 					ai_1.isMyTime = true;
@@ -998,13 +1002,23 @@ void GameScene::player_turn_input(Event& e)
 	}
 	else if (ai_1.isMyTime)
 	{
-		puke_manager.autoSeleteCard(&ai_1);
+		PukeType type = illegal;
+		puke_manager.autoSeleteCard(&ai_1, type);
+		if (type == rocket)
+			score *= 4;
+		else if (type == bomb)
+			score *= 2;
 		if (!ai_1.isMyTime)
 			ai_2.isMyTime = true;
 	}
 	else if (ai_2.isMyTime)
 	{
-		puke_manager.autoSeleteCard(&ai_2);
+		PukeType type = illegal;
+		puke_manager.autoSeleteCard(&ai_2, type);
+		if (type == rocket)
+			score *= 4;
+		else if (type == bomb)
+			score *= 2;
 		if (!ai_2.isMyTime)
 			human.isMyTime = true;
 	}
